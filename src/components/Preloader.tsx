@@ -218,13 +218,12 @@ export default function Preloader() {
               position: 'absolute',
               bottom: '-10px',
               left: '50%',
-              transform: 'translateX(-50%)',
               width: '80%',
               maxWidth: '600px',
               height: '1px',
               background: 'var(--accent)',
               transformOrigin: 'left',
-              scaleX: 0, // setup for GSAP
+              transform: 'translateX(-50%) scaleX(0)', // Combined with existing translate
             }}
           />
         </div>
