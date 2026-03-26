@@ -7,7 +7,7 @@ type AnimationPreset = 'fadeUp' | 'blurIn' | 'slideLeft'
 
 interface SplitTextProps {
   text: string
-  tag?: keyof React.JSX.IntrinsicElements
+  tag?: keyof HTMLElementTagNameMap
   splitBy?: 'char' | 'word'
   preset?: AnimationPreset
   stagger?: number
