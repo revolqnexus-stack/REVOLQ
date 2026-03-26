@@ -7,7 +7,7 @@ type AnimationPreset = 'fadeUp' | 'blurIn' | 'slideLeft'
 
 interface SplitTextProps {
   text: string
-  tag?: keyof HTMLElementTagNameMap
+  tag?: 'div' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'p' | 'section' | 'article'
   splitBy?: 'char' | 'word'
   preset?: AnimationPreset
   stagger?: number
@@ -26,7 +26,7 @@ export default function SplitText({
   className = '',
   style = {},
 }: SplitTextProps) {
-  const containerRef = useRef<HTMLElement>(null)
+  const containerRef = useRef<any>(null)
   
   // Default stagger logic
   const defaultStagger = stagger ?? (splitBy === 'char' ? 0.04 : 0.1)
