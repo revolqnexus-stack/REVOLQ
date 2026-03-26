@@ -70,7 +70,7 @@ export default function Nav() {
         </Link>
 
         {/* Desktop Nav Links & CTA */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '3rem' }} className="desktop-nav">
+        <div style={{ alignItems: 'center', gap: '3rem' }} className="desktop-nav">
           {navLinks.map((link) => {
             const isActive = pathname === link.href
             return (
@@ -146,7 +146,7 @@ export default function Nav() {
         </div>
 
         {/* Mobile Hamburger Layout */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }} className="mobile-nav-btn">
+        <div style={{ alignItems: 'center', gap: '1rem' }} className="mobile-nav-btn">
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
