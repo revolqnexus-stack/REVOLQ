@@ -87,11 +87,11 @@ const fragmentShader = `
     float scrollShift = uScroll * 0.3;
     
     // 5 color zones
-    vec3 colA = vec3(0.02, 0.02, 0.04); // deep ink
-    vec3 colB = vec3(0.42, 0.37, 0.66); // violet
-    vec3 colC = vec3(0.77, 0.60, 0.60); // rose
-    vec3 colD = vec3(0.83, 0.69, 0.44); // gold
-    vec3 colE = vec3(0.94, 0.93, 0.96); // white
+    vec3 colA = vec3(0.031, 0.027, 0.027); // matches --bg
+    vec3 colB = vec3(0.20, 0.12, 0.08);    // warm brown-red
+    vec3 colC = vec3(0.35, 0.25, 0.10);    // amber glow
+    vec3 colD = vec3(0.08, 0.06, 0.10);    // deep violet shadow
+    vec3 colE = vec3(0.031, 0.027, 0.027); // matches --bg
     
     float colorPos = noise * 0.5 + 0.5 + scrollShift;
     colorPos = mod(colorPos, 1.0);
@@ -164,9 +164,9 @@ export default function AuroraBackground() {
     // Floating orbs
     const orbGeometry = new THREE.SphereGeometry(0.3, 16, 16)
     const orbMaterial = new THREE.MeshBasicMaterial({
-      color: 0x6b5fa8,
+      color: 0xc8a96e,
       transparent: true,
-      opacity: 0.04,
+      opacity: 0.06,
     })
     const orbs: THREE.Mesh[] = []
     for (let i = 0; i < 3; i++) {
@@ -192,7 +192,7 @@ export default function AuroraBackground() {
     particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3))
     const particleMaterial = new THREE.PointsMaterial({
       size: 0.008,
-      color: 0xd8d4e8,
+      color: 0xede8e3,
       transparent: true,
       opacity: 0.4,
       sizeAttenuation: true,

@@ -41,21 +41,26 @@ export default function Hero() {
         </div>
 
         {/* Headline */}
-        <div style={{ marginBottom: '2rem' }}>
+        <div style={{ 
+          marginBottom: '2rem', 
+          fontSize: 'clamp(5rem, 14vw, 13rem)', 
+          lineHeight: 0.9, 
+          letterSpacing: '-0.04em',
+          fontWeight: 300,
+          fontFamily: 'var(--font-heading)'
+        }}>
           <SplitText
             text="We build"
-            className="text-h1"
             tag="h1"
           />
           <SplitText
             text="digital systems"
-            className="text-h1 gold-italic"
+            style={{ fontStyle: 'italic', color: 'var(--rose)' }}
             delay={0.2}
             tag="h1"
           />
           <SplitText
             text="that work."
-            className="text-h1"
             delay={0.4}
             tag="h1"
           />

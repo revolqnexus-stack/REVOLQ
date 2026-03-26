@@ -75,7 +75,7 @@ export default function Cursor() {
           width: 6,
           height: 6,
           borderRadius: '50%',
-          background: 'var(--rose)',
+          background: '#fff',
           pointerEvents: 'none',
           zIndex: 9998,
           mixBlendMode: 'difference',
@@ -89,24 +89,27 @@ export default function Cursor() {
           position: 'fixed',
           top: 0,
           left: 0,
-          width: isHovering ? 64 : 40,
-          height: isHovering ? 64 : 40,
+          width: isHovering ? 80 : 40,
+          height: isHovering ? 80 : 40,
           borderRadius: '50%',
-          border: `1px solid var(--rose)`,
+          border: isHovering ? 'none' : `1px solid rgba(255, 255, 255, 0.5)`,
+          background: isHovering ? '#fff' : 'transparent',
           pointerEvents: 'none',
           zIndex: 9997,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          transition: 'width 0.3s ease, height 0.3s ease',
+          mixBlendMode: 'difference',
+          transition: 'width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border 0.3s ease',
         }}
       >
         {hoverText && (
           <span
             style={{
               fontFamily: 'var(--font-mono)',
-              fontSize: 8,
-              color: 'var(--rose)',
+              fontSize: 10,
+              fontWeight: 600,
+              color: '#000',
               letterSpacing: '0.1em',
             }}
           >
