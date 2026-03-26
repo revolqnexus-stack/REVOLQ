@@ -3,278 +3,246 @@
 import { useEffect, useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import gsap from 'gsap'
-import { playThud, playGlitch, playChime, playWhoosh, playLetterThud } from '@/lib/sounds'
+import { playThud, playChime, playWhoosh } from '@/lib/sounds'
 
 const LETTERS = ['R', 'E', 'V', 'O', 'L', 'Q']
 
 export default function Preloader() {
   const [show, setShow] = useState(false)
-  const [phase, setPhase] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
-  const lettersRef = useRef<(HTMLSpanElement | null)[]>([])
-  const lineRef = useRef<SVGLineElement>(null)
-  const subTextRef = useRef<HTMLDivElement>(null)
+  
+  // Elements for GSAP
+  const topHalfRef = useRef<HTMLDivElement>(null)
+  const bottomHalfRef = useRef<HTMLDivElement>(null)
+  const topLettersRef = useRef<(HTMLSpanElement | null)[]>([])
+  const bottomLettersRef = useRef<(HTMLSpanElement | null)[]>([])
+  const lineRef = useRef<HTMLDivElement>(null)
+  const counterRef = useRef<HTMLDivElement>(null)
   const audioCtxRef = useRef<AudioContext | null>(null)
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
-
-    // Check sessionStorage
-    const hasLoaded = sessionStorage.getItem('revolq_loaded')
-    if (hasLoaded) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setShow(false)
+    // Mobile skip
+    if (typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches) {
+      sessionStorage.setItem('revolq_loaded', 'true')
       return
-    }
-
-    setShow(true)
-
-    // Create AudioContext
-    try {
-      audioCtxRef.current = new AudioContext()
-    } catch {
-      // Audio not supported
     }
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
     if (prefersReducedMotion) {
-      // Skip all animations
-      setTimeout(() => {
-        sessionStorage.setItem('revolq_loaded', 'true')
-        setShow(false)
-      }, 500)
+      sessionStorage.setItem('revolq_loaded', 'true')
       return
     }
 
-    // Phase 1: Blackout (0ms to 800ms)
-    setPhase(1)
-    if (audioCtxRef.current) {
-      playThud(audioCtxRef.current)
-    }
+    const hasLoaded = sessionStorage.getItem('revolq_loaded')
+    if (hasLoaded) return
 
-    // Phase 2: Glitch burst (800ms)
-    setTimeout(() => {
-      setPhase(2)
-      // Play 3 rapid glitch clicks
-      if (audioCtxRef.current) {
-        for (let i = 0; i < 3; i++) {
-          setTimeout(() => {
-            if (audioCtxRef.current) playGlitch(audioCtxRef.current)
-          }, i * 80)
-        }
-      }
+    setShow(true)
 
-      // Shake the R letter
-      const rLetter = lettersRef.current[0]
-      if (rLetter) {
-        gsap.to(rLetter, {
-          x: '+=8',
-          y: '+=4',
-          duration: 0.05,
-          repeat: 6,
-          yoyo: true,
-          ease: 'none',
-        })
-      }
-    }, 800)
+    try {
+      audioCtxRef.current = new AudioContext()
+    } catch {}
 
-    // Phase 3: Letter build (1400ms)
-    setTimeout(() => {
-      setPhase(3)
-      lettersRef.current.forEach((el, i) => {
-        if (!el) return
-        gsap.fromTo(
-          el,
-          {
-            y: -80,
-            opacity: 0,
-            filter: 'blur(20px)',
-          },
-          {
-            y: 0,
-            opacity: 1,
-            filter: 'blur(0px)',
-            duration: 0.5,
-            delay: i * 0.12,
-            ease: 'power3.out',
-          }
-        )
-        // Play letter thud
-        if (audioCtxRef.current) {
-          setTimeout(() => {
-            if (audioCtxRef.current) playLetterThud(audioCtxRef.current, i)
-          }, i * 120)
-        }
-      })
-    }, 1400)
-
-    // Phase 4: Breathe (2600ms)
-    setTimeout(() => {
-      setPhase(4)
-
-      // Breathe animation
-      const letterContainer = containerRef.current?.querySelector('.preloader-letters')
-      if (letterContainer) {
-        gsap.to(letterContainer, {
-          scale: 1.02,
-          duration: 0.3,
-          yoyo: true,
-          repeat: 1,
-          ease: 'sine.inOut',
-        })
-      }
-
-      // Line draw
-      if (lineRef.current) {
-        gsap.fromTo(
-          lineRef.current,
-          { strokeDashoffset: 1 },
-          { strokeDashoffset: 0, duration: 0.5, ease: 'power2.inOut' }
-        )
-      }
-
-      // Sub text fade
-      if (subTextRef.current) {
-        gsap.fromTo(
-          subTextRef.current,
-          { opacity: 0 },
-          { opacity: 1, duration: 0.4, delay: 0.2 }
-        )
-      }
-
-      // Chime sound
-      if (audioCtxRef.current) {
-        playChime(audioCtxRef.current)
-      }
-    }, 2600)
-
-    // Phase 5: Explosion exit (3200ms)
-    setTimeout(() => {
-      setPhase(5)
-
-      const letterContainer = containerRef.current?.querySelector('.preloader-letters')
-      if (letterContainer) {
-        gsap.to(letterContainer, {
-          scale: 8,
-          opacity: 0,
-          duration: 0.6,
-          ease: 'power4.in',
-        })
-      }
-
-      if (containerRef.current) {
-        gsap.to(containerRef.current, {
-          clipPath: 'circle(150% at 50% 50%)',
-          duration: 0.8,
-          ease: 'power3.inOut',
-        })
-      }
-
-      if (audioCtxRef.current) {
-        playWhoosh(audioCtxRef.current)
-      }
-
-      setTimeout(() => {
+    const tl = gsap.timeline({
+      onComplete: () => {
         sessionStorage.setItem('revolq_loaded', 'true')
         setShow(false)
-      }, 900)
-    }, 3200)
+      }
+    })
+
+    // STAGE 1 (0ms -> 400ms): Letters stagger in
+    if (audioCtxRef.current) playThud(audioCtxRef.current)
+
+    // We animate both top and bottom halves simultaneously to keep them aligned
+    const topLetters = topLettersRef.current.filter(Boolean)
+    const bottomLetters = bottomLettersRef.current.filter(Boolean)
+
+    tl.fromTo(
+      [topLetters, bottomLetters],
+      { y: 40, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.4, stagger: 0.05, ease: 'power2.out' },
+      0 // Start at 0s
+    )
+
+    // STAGE 2 (400ms -> 1200ms): Sweep line and progress counter
+    tl.fromTo(
+      lineRef.current,
+      { scaleX: 0, transformOrigin: 'left' },
+      { scaleX: 1, duration: 0.8, ease: 'power3.inOut' },
+      '+=0' // starts exactly after stage 1 ends (at 0.4s)
+    )
+
+    // Progress counter (starts at 0.4s, goes for 0.8s)
+    tl.to(
+      { val: 0 },
+      {
+        val: 100,
+        duration: 0.8,
+        ease: 'power1.inOut',
+        onUpdate: function () {
+          if (counterRef.current) {
+            counterRef.current.innerText = Math.round(this.targets()[0].val).toString().padStart(2, '0')
+          }
+        }
+      },
+      0.4
+    )
+
+    // STAGE 3 (1200ms -> 2000ms): The Split
+    tl.add(() => {
+      if (audioCtxRef.current) playWhoosh(audioCtxRef.current)
+    }, 1.2)
+
+    // Top half flies up
+    tl.to(
+      topHalfRef.current,
+      { y: '-50vh', duration: 0.6, ease: 'power3.in' },
+      1.2
+    )
+
+    // Bottom half + line flies down
+    tl.to(
+      bottomHalfRef.current,
+      { y: '50vh', duration: 0.6, ease: 'power3.in' },
+      1.2
+    )
+    tl.to(
+      lineRef.current,
+      { y: '50vh', opacity: 0, duration: 0.6, ease: 'power3.in' },
+      1.2
+    )
+
+    // Background fades and actual content clips in
+    tl.to(
+      containerRef.current,
+      { opacity: 0, duration: 0.4, ease: 'power2.inOut' },
+      1.6 // End of the 2.0s sequence
+    )
+
+    // Cleanup
+    return () => {
+      tl.kill()
+    }
   }, [])
+
+  // Lock scroll while active
+  useEffect(() => {
+    if (show) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+  }, [show])
 
   if (!show) return null
 
   return (
     <AnimatePresence>
-      {show && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          <div
-            ref={containerRef}
-            className="preloader"
+      <motion.div
+        ref={containerRef}
+        initial={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 9999,
+          background: 'var(--bg)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          userSelect: 'none',
+        }}
+      >
+        <div style={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center' }}>
+          
+          {/* TOP HALF (Clipped) */}
+          <div 
+            ref={topHalfRef}
             style={{
-              clipPath: phase >= 5 ? 'circle(0% at 50% 50%)' : 'circle(150% at 50% 50%)',
+              position: 'absolute',
+              display: 'flex',
+              clipPath: 'polygon(0 0, 100% 0, 100% 50%, 0 50%)',
             }}
           >
-            {/* Phase 2: Flash effects */}
-            {phase === 2 && (
-              <div
+            {LETTERS.map((char, i) => (
+              <span
+                key={`top-${i}`}
+                ref={(el) => { topLettersRef.current[i] = el }}
                 style={{
-                  position: 'absolute',
-                  inset: 0,
-                  animation: 'flicker 0.15s steps(3) 3',
-                }}
-              />
-            )}
-
-            {/* Letters */}
-            <div className="preloader-letters" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              {LETTERS.map((letter, i) => (
-                <span
-                  key={letter}
-                  ref={(el) => { lettersRef.current[i] = el }}
-                  className="preloader-letter"
-                  style={{
-                    opacity: phase < 3 ? (phase === 2 && i === 0 ? 1 : 0) : 1,
-                    fontSize: phase === 2 && i === 0 ? '30vw' : '18vw',
-                    textShadow:
-                      phase === 2 && i === 0
-                        ? '-4px 0 rgba(255,0,0,0.7), 4px 0 rgba(0,255,255,0.7)'
-                        : phase === 3
-                          ? `-${Math.max(0, 3 - i)}px 0 rgba(255,0,0,0.3), ${Math.max(0, 3 - i)}px 0 rgba(0,255,255,0.3)`
-                          : 'none',
-                  }}
-                >
-                  {letter}
-                </span>
-              ))}
-            </div>
-
-            {/* Phase 4: Line and subtitle */}
-            {phase >= 4 && (
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  marginTop: '1rem',
+                  fontFamily: 'var(--font-display)',
+                  fontStyle: 'italic',
+                  fontSize: 'clamp(3rem, 8vw, 7rem)',
+                  letterSpacing: '0.5em',
+                  color: 'var(--fg)',
+                  opacity: 0, 
+                  display: 'inline-block'
                 }}
               >
-                <svg width="40vw" height="2" viewBox="0 0 100 2" style={{ maxWidth: '500px' }}>
-                  <line
-                    ref={lineRef}
-                    x1="0"
-                    y1="1"
-                    x2="100"
-                    y2="1"
-                    stroke="var(--rose)"
-                    strokeWidth="0.5"
-                    strokeDasharray="1"
-                    strokeDashoffset="1"
-                    pathLength="1"
-                  />
-                </svg>
-                <div
-                  ref={subTextRef}
-                  className="text-label"
-                  style={{
-                    marginTop: '1rem',
-                    opacity: 0,
-                    letterSpacing: '0.5em',
-                  }}
-                >
-                  DIGITAL AGENCY · KERALA · INDIA
-                </div>
-              </div>
-            )}
+                {char}
+              </span>
+            ))}
           </div>
 
-          
-        </motion.div>
-      )}
+          {/* BOTTOM HALF (Clipped) */}
+          <div 
+            ref={bottomHalfRef}
+            style={{
+              position: 'relative', // this one provides the block layout height
+              display: 'flex',
+              clipPath: 'polygon(0 50%, 100% 50%, 100% 100%, 0 100%)',
+            }}
+          >
+            {LETTERS.map((char, i) => (
+              <span
+                key={`bot-${i}`}
+                ref={(el) => { bottomLettersRef.current[i] = el }}
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontStyle: 'italic',
+                  fontSize: 'clamp(3rem, 8vw, 7rem)',
+                  letterSpacing: '0.5em',
+                  color: 'var(--fg)',
+                  opacity: 0,
+                  display: 'inline-block'
+                }}
+              >
+                {char}
+              </span>
+            ))}
+          </div>
+
+          {/* Sweep Line positioned absolutely under the text block */}
+          <div
+            ref={lineRef}
+            style={{
+              position: 'absolute',
+              bottom: '-10px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '80%',
+              maxWidth: '600px',
+              height: '1px',
+              background: 'var(--accent)',
+              transformOrigin: 'left',
+              scaleX: 0, // setup for GSAP
+            }}
+          />
+        </div>
+
+        {/* Progress Counter (bottom right corner) */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '2rem',
+            right: '2rem',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 'var(--text-xs)',
+            color: 'var(--fg-3)',
+          }}
+        >
+          <span ref={counterRef}>00</span>%
+        </div>
+      </motion.div>
     </AnimatePresence>
   )
 }

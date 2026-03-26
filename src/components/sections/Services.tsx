@@ -1,186 +1,162 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import Image from 'next/image'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Code, Search, Cpu, PenLine, Layers, RefreshCw } from 'lucide-react'
-import SplitText from '@/components/ui/SplitText'
+import { useState } from 'react'
 
-gsap.registerPlugin(ScrollTrigger)
-
-const icons = [Code, Search, Cpu, PenLine, Layers, RefreshCw]
-
-const services = [
+const servicesData = [
   {
-    num: '01',
     title: 'WEB DEVELOPMENT',
-    desc: 'Next.js websites engineered to rank, convert, and scale. Not templates. Not themes. Systems.',
-    tags: ['Next.js', 'TypeScript', 'Vercel', 'SEO-first'],
-    img: '/images/texture1.png',
+    tags: ['Next.js', 'React', 'TypeScript', 'Tailwind'],
   },
   {
-    num: '02',
-    title: 'SEO & GBP',
-    desc: 'Google visibility for businesses that deserve to be found. Local SEO, Search Console, structured data, monthly ranking reports.',
-    tags: ['Google', 'Search Console', 'GBP', 'Schema'],
-    img: '/images/texture1.png',
+    title: 'SEO & ARCHITECTURE',
+    tags: ['Technical Context', 'Core Web Vitals', 'Schema'],
   },
   {
-    num: '03',
     title: 'AI AUTOMATION',
-    desc: 'WhatsApp agents that reply in your voice. n8n workflows that run while you sleep. Your business, automated.',
-    tags: ['Claude AI', 'n8n', 'WhatsApp API', 'Webhooks'],
-    img: '/images/texture1.png',
+    tags: ['Data Pipelines', 'LLMs', 'Workflow Automation'],
   },
   {
-    num: '04',
-    title: 'CONTENT & COPY',
-    desc: 'Words that convert. Descriptions that rank. Copy that makes visitors become clients.',
-    tags: ['SEO Copy', 'Brand Voice', 'OG', 'Schema'],
-    img: '/images/texture1.png',
-  },
-  {
-    num: '05',
     title: 'BRAND STRATEGY',
-    desc: 'Positioning. Identity. The story your business tells before anyone speaks.',
-    tags: ['Identity', 'Positioning', 'Visual System'],
-    img: '/images/texture1.png',
-  },
-  {
-    num: '06',
-    title: 'MONTHLY RETAINER',
-    desc: 'We become your digital team. GBP management, content, SEO monitoring, AI maintenance — all handled. Every month.',
-    tags: ['Ongoing', 'Reports', 'Management', 'Growth'],
-    img: '/images/texture1.png',
+    tags: ['Visual Identity', 'Typography Systems', 'UI/UX'],
   },
 ]
 
 export default function Services() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (!sectionRef.current) return
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) return
-
-    const rows = sectionRef.current.querySelectorAll('.service-row')
-    
-    rows.forEach((row, i) => {
-      gsap.fromTo(row, 
-        { y: 50, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          duration: 0.8, 
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: row,
-            start: 'top 85%',
-          }
-        }
-      )
-    })
-
-    return () => {
-      ScrollTrigger.getAll().forEach(st => {
-        if (st.trigger && (st.trigger as Element).classList?.contains('service-row')) {
-          st.kill()
-        }
-      })
-    }
-  }, [])
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
 
   return (
-    <section ref={sectionRef} className="section-padding" style={{ position: 'relative' }}>
+    <section className="section-padding" id="services" style={{ paddingBottom: 'var(--sp-9)' }}>
       <div className="max-container">
-        {/* Header */}
-        <div style={{ marginBottom: '6rem', maxWidth: 800 }}>
-          <span className="text-label" style={{ marginBottom: '1.5rem', display: 'block' }}>
+        
+        {/* SECTION HEADER */}
+        <div style={{ marginBottom: 'var(--sp-8)' }}>
+          <span 
+            className="text-label" 
+            style={{ 
+              display: 'block', 
+              color: 'var(--accent)', 
+              fontSize: 'var(--text-xs)', 
+              letterSpacing: '0.5em', 
+              textTransform: 'uppercase', 
+              marginBottom: 'var(--sp-5)' 
+            }}
+          >
             WHAT WE DO
           </span>
-          <SplitText text="Every system." className="text-h2" tag="h2" />
-          <SplitText text="Carefully built." className="text-h2" delay={0.1} tag="h2" />
-          <p className="text-body" style={{ marginTop: '2rem', maxWidth: 400, fontSize: '1.1rem', color: 'var(--fog)' }}>
-            We don't just build websites. We build comprehensive digital ecosystems that drive revenue.
-          </p>
+          <h2 
+            style={{ 
+              fontFamily: 'var(--font-display)', 
+              fontSize: 'var(--text-2xl)', 
+              fontWeight: 300, 
+              color: 'var(--fg)', 
+              letterSpacing: '-0.03em',
+              lineHeight: 1.05
+            }}
+          >
+            Every system.<br />Carefully built.
+          </h2>
         </div>
 
-        {/* Rows */}
-        <div style={{ borderTop: '1px solid var(--border)' }}>
-          {services.map((service, i) => {
-            const Icon = icons[i]
+        {/* SERVICES ACCORDION LIST */}
+        <div 
+          onMouseLeave={() => setHoveredIdx(null)}
+          style={{ width: '100%', display: 'flex', flexDirection: 'column' }}
+        >
+          {servicesData.map((service, i) => {
+            const isHovered = hoveredIdx === i
+            const isDimmed = hoveredIdx !== null && hoveredIdx !== i
+
             return (
               <div
-                key={service.num}
-                className="service-row service-detail-grid"
+                key={service.title}
+                onMouseEnter={() => setHoveredIdx(i)}
                 style={{
-                  padding: '4rem 0',
-                  borderBottom: '1px solid var(--border)',
                   display: 'grid',
-                  gridTemplateColumns: '1fr 3fr 2fr',
-                  gap: '2rem',
-                  alignItems: 'start',
+                  gridTemplateColumns: '80px 1fr auto',
+                  alignItems: 'center',
+                  padding: '2rem 1rem',
+                  borderBottom: `1px solid ${isHovered ? 'var(--border-accent)' : 'var(--border)'}`,
+                  background: isHovered ? 'var(--accent-glow)' : 'transparent',
+                  opacity: isDimmed ? 0.4 : 1,
+                  transition: 'all 350ms var(--ease)',
+                  cursor: 'pointer',
+                  margin: '0 -1rem' // Pull out to give padding room for the background glow
                 }}
+                data-cursor="view"
               >
-                {/* 1. Number & Icon */}
-                <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-                  <span className="text-mono" style={{ fontSize: '1rem', opacity: 0.3 }}>
-                    {service.num}
-                  </span>
-                  <div style={{ padding: '1rem', border: '1px solid var(--dim)', borderRadius: '50%' }}>
-                    <Icon size={24} strokeWidth={1} color="var(--rose)" />
-                  </div>
+                {/* Number */}
+                <div 
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '0.75rem',
+                    color: 'var(--fg-3)',
+                    opacity: isHovered ? 1 : 0.3,
+                    transition: 'opacity 350ms var(--ease)'
+                  }}
+                >
+                  0{i + 1}
                 </div>
 
-                {/* 2. Title & Desc */}
-                <div style={{ paddingRight: '2rem' }}>
-                  <h3
+                {/* Title */}
+                <h3 
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 'clamp(1.8rem, 3vw, 2.8rem)',
+                    fontWeight: 300,
+                    letterSpacing: '-0.02em',
+                    color: isHovered ? 'var(--fg)' : 'var(--fg-2)',
+                    transition: 'color 350ms var(--ease)'
+                  }}
+                >
+                  {service.title}
+                </h3>
+
+                {/* Right Area (Tags + Arrow) */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', overflow: 'hidden' }}>
+                  <div 
+                    className="max-md:hidden"
                     style={{
-                      fontFamily: 'var(--font-heading)',
-                      fontSize: 'clamp(2rem, 3.5vw, 3rem)',
-                      fontWeight: 300,
-                      color: 'var(--white)',
-                      marginBottom: '1rem',
-                      lineHeight: 1.1,
-                      letterSpacing: '-0.02em',
+                      display: 'flex',
+                      gap: '0.75rem',
+                      opacity: isHovered ? 1 : 0,
+                      transform: isHovered ? 'translateX(0)' : 'translateX(20px)',
+                      transition: 'all 350ms var(--ease)'
                     }}
                   >
-                    {service.title}
-                  </h3>
-                  <p className="text-body" style={{ fontSize: '1.05rem', color: 'var(--fog)', maxWidth: 500, lineHeight: 1.6 }}>
-                    {service.desc}
-                  </p>
-                </div>
-
-                {/* 3. Tags */}
-                <div>
-                  <h4 className="text-mono" style={{ fontSize: '0.65rem', opacity: 0.5, marginBottom: '1.5rem' }}>
-                    DELIVERABLES
-                  </h4>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem' }}>
                     {service.tags.map((tag) => (
-                      <span
+                      <span 
                         key={tag}
-                        className="text-mono"
                         style={{
-                          padding: '0.5rem 0.8rem',
-                          border: '1px solid rgba(255,255,255,0.1)',
-                          borderRadius: '2px',
-                          fontSize: '0.65rem',
-                          color: 'var(--white)',
-                          background: 'rgba(255,255,255,0.02)',
+                          fontFamily: 'var(--font-mono)',
+                          fontSize: 'var(--text-xs)',
+                          letterSpacing: '0.15em',
+                          color: 'var(--fg-3)',
+                          textTransform: 'uppercase',
                         }}
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
+
+                  {/* Arrow ↗ */}
+                  <span 
+                    style={{
+                      color: 'var(--accent)',
+                      fontSize: 'var(--text-sm)',
+                      opacity: isHovered ? 1 : 0,
+                      transform: isHovered ? 'translate(0,0)' : 'translate(-10px, 10px)',
+                      transition: 'all 350ms var(--ease)'
+                    }}
+                  >
+                    ↗
+                  </span>
                 </div>
               </div>
             )
           })}
         </div>
+
       </div>
     </section>
   )

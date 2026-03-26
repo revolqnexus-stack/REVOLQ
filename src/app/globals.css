@@ -1,66 +1,171 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-ink: #080707;
-  --color-ink2: #0f0d0d;
-  --color-fog: #7a7470;
-  --color-rose: #c8a96e;
-  --color-rose2: #e8c99a;
-  --color-gold: #c8a96e;
-  --color-violet: #8c7cca;
-  --color-white: #ede8e3;
-  --color-dim: rgba(255,255,255,0.06);
+  --color-bg: #080707;
+  --color-bg-1: #0e0c0c;
+  --color-bg-2: #141111;
+  --color-bg-3: #1c1818;
+  
+  --color-fg: #ede8e3;
+  --color-fg-2: #a09890;
+  --color-fg-3: #5c5450;
+  --color-fg-inv: #080707;
+  
+  --color-accent: #c8a96e;
+  --color-accent-2: #e8c99a;
+  --color-accent-dim: rgba(200,169,110,0.12);
+  
   --color-border: rgba(255,255,255,0.06);
-  --color-glass: rgba(255,255,255,0.04);
+  --color-border-hover: rgba(255,255,255,0.12);
+  --color-border-accent: rgba(200,169,110,0.25);
 
-  --font-heading: var(--font-cormorant);
-  --font-body: var(--font-jost);
-  --font-mono: var(--font-dm-mono);
+  --font-display: "Cormorant Garamond", "Georgia", serif;
+  --font-body: "Jost", "DM Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --text-hero: clamp(5rem, 13vw, 12rem);
+  --text-hero--line-height: 0.9;
+  --text-hero--letter-spacing: -0.04em;
+  
+  --text-display: clamp(2.8rem, 5.5vw, 5rem);
+  --text-display--line-height: 1.0;
+  --text-display--letter-spacing: -0.03em;
+  
+  --tracking-ultrawide: 0.5em;
+  --tracking-wide: 0.2em;
+  --tracking-tight: -0.04em;
+  
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 :root {
-  --ink: #080707;
-  --ink2: #0f0d0d;
-  --fog: #7a7470;
-  --rose: #c8a96e;
-  --rose2: #e8c99a;
-  --gold: #c8a96e;
-  --violet: #8c7cca;
-  --white: #ede8e3;
-  --dim: rgba(255,255,255,0.06);
-  --border: rgba(255,255,255,0.06);
-  --glass: rgba(255,255,255,0.04);
+  /* ── BACKGROUNDS ── */
+  --bg:           #080707;   /* warm black — slight red undertone */
+  --bg-1:         #0e0c0c;   /* cards, elevated surfaces */
+  --bg-2:         #141111;   /* hover states, active surfaces */
+  --bg-3:         #1c1818;   /* borders, dividers */
+
+  /* ── FOREGROUND ── */
+  --fg:           #ede8e3;   /* primary text — warm off-white, NEVER pure white */
+  --fg-2:         #a09890;   /* secondary text — muted warm grey */
+  --fg-3:         #5c5450;   /* tertiary text — very muted */
+  --fg-inv:       #080707;   /* text on light/accent backgrounds */
+
+  /* ── SINGLE ACCENT — warm gold. NOTHING ELSE. ── */
+  --accent:       #c8a96e;   /* primary accent */
+  --accent-2:     #e8c99a;   /* hover/lighter variant */
+  --accent-dim:   rgba(200,169,110,0.12); /* subtle accent bg */
+  --accent-glow:  rgba(200,169,110,0.06); /* very subtle glow */
+
+  /* ── BORDERS ── */
+  --border:       rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --border-accent:rgba(200,169,110,0.25);
+
+  /* ── TYPOGRAPHY ── */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Jost', 'DM Sans', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+
+  /* ── TYPE SCALE ── */
+  --text-xs:   0.65rem;    /* 10.4px — labels, tags */
+  --text-sm:   0.78rem;    /* 12.5px — captions, meta */
+  --text-base: 0.875rem;   /* 14px   — body */
+  --text-md:   1rem;       /* 16px   — large body */
+  --text-lg:   1.25rem;    /* 20px   — small headings */
+  --text-xl:   1.75rem;    /* 28px   — section subheads */
+  --text-2xl:  2.5rem;     /* 40px   — section headings */
+  --text-3xl:  4rem;       /* 64px   — display */
+  --text-hero: clamp(5rem, 13vw, 12rem); /* hero title */
+
+  /* ── SPACING (8px grid) ── */
+  --sp-1:  0.25rem;   /* 4px  */
+  --sp-2:  0.5rem;    /* 8px  */
+  --sp-3:  0.75rem;   /* 12px */
+  --sp-4:  1rem;      /* 16px */
+  --sp-5:  1.5rem;    /* 24px */
+  --sp-6:  2rem;      /* 32px */
+  --sp-7:  3rem;      /* 48px */
+  --sp-8:  4rem;      /* 64px */
+  --sp-9:  6rem;      /* 96px */
+  --sp-10: 8rem;      /* 128px */
+
+  /* ── RADIUS ── */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  /* ── SHADOWS ── */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.5), 0 2px 6px rgba(0,0,0,0.3);
+  --shadow-glow: 0 0 40px rgba(200,169,110,0.08);
+
+  /* ── TRANSITIONS ── */
+  --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out:   cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring:cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast:   150ms;
+  --dur-base:   300ms;
+  --dur-slow:   600ms;
+  --dur-xslow:  1000ms;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* ── BASE RESETS ── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 html {
-  background: var(--ink);
-  color: var(--white);
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-weight: 200;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
   scroll-behavior: auto;
   overflow-x: hidden;
 }
 
-body {
-  background: var(--ink);
-  color: var(--white);
-  font-family: var(--font-body), sans-serif;
-  font-weight: 200;
-  font-size: 0.95rem;
-  line-height: 1.9;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+body { 
+  overflow-x: hidden; 
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
 }
 
-::selection {
-  background: var(--rose);
-  color: var(--ink);
+/* ── TYPOGRAPHY BASE ── */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: var(--fg);
 }
+
+p {
+  font-family: var(--font-body);
+  font-weight: 200;
+  line-height: 1.75;
+  color: var(--fg-2);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--dur-base) var(--ease);
+}
+
+/* ── SELECTION ── */
+::selection {
+  background: var(--accent-dim);
+  color: var(--accent-2);
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
 /* ─── Typography ─── */
 

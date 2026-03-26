@@ -1,145 +1,271 @@
 'use client'
 
-import SplitText from '@/components/ui/SplitText'
-import RevealImage from '@/components/ui/RevealImage'
-import MagneticButton from '@/components/ui/MagneticButton'
-
-const metrics = [
-  { label: 'Google Maps Target', value: '#4→#1' },
-  { label: 'Reviews', value: '464' },
-  { label: 'Rating', value: '4.9★' },
-  { label: 'AI Active', value: '24/7' },
-]
+import { useEffect, useRef } from 'react'
+import Image from 'next/image'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 export default function CaseStudies() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const imageRef = useRef<HTMLImageElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger)
+    
+    // Parallax logic
+    if (sectionRef.current && imageRef.current && contentRef.current) {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        }
+      })
+
+      // Image slowly zooms
+      tl.fromTo(
+        imageRef.current,
+        { scale: 1.0 },
+        { scale: 1.08, ease: 'none' },
+        0
+      )
+
+      // Content translates slightly upward
+      tl.fromTo(
+        contentRef.current,
+        { y: 0 },
+        { y: -30, ease: 'none' },
+        0
+      )
+    }
+
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill())
+    }
+  }, [])
+
   return (
-    <section className="section-padding" style={{ borderTop: '1px solid var(--border)' }}>
-      <div className="max-container">
-        {/* Header */}
-        <div style={{ marginBottom: '4rem' }}>
-          <span className="text-label" style={{ display: 'block', marginBottom: '1.5rem' }}>
-            OUR WORK
-          </span>
-          <SplitText text="Built for real businesses." className="text-h2" tag="h2" />
-        </div>
+    <section 
+      ref={sectionRef}
+      id="work"
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100vh',
+        minHeight: '800px',
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      {/* Background Image Container */}
+      <div 
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 1,
+          overflow: 'hidden'
+        }}
+      >
+        <Image
+          ref={imageRef}
+          src="/images/nixtudio.png"
+          alt="Nixtudio Bridal Studio Case Study"
+          fill
+          style={{
+            objectFit: 'cover',
+            objectPosition: 'center'
+          }}
+          priority
+        />
+        {/* Gradient Overlay */}
+        <div 
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(to right, rgba(8,7,7,0.95) 40%, rgba(8,7,7,0.3) 100%)',
+          }}
+        />
+      </div>
 
-        {/* NIXTUDIO — Featured */}
-        <div style={{ marginBottom: '6rem' }}>
-          {/* Full Width Image Hero */}
-          <div style={{ width: '100%', marginBottom: '3rem' }}>
-            <RevealImage
-              src="/images/nixtudio.png"
-              alt="NIXTUDIO bridal studio by Nikita Liby"
-              style={{ aspectRatio: '16/7', objectFit: 'cover', width: '100%' }}
-            />
+      {/* Foreground Content */}
+      <div 
+        ref={contentRef}
+        style={{
+          position: 'relative',
+          zIndex: 2,
+          width: '100%',
+          padding: 'clamp(3rem, 8vw, 8rem)',
+        }}
+      >
+        <div style={{ position: 'relative', maxWidth: '800px' }}>
+          {/* Project Number (Background) */}
+          <div 
+            style={{
+              position: 'absolute',
+              top: '-2rem',
+              left: '-1rem',
+              fontFamily: 'var(--font-display)',
+              fontSize: '12rem',
+              fontWeight: 300,
+              color: 'var(--fg)',
+              opacity: 0.04,
+              lineHeight: 1,
+              pointerEvents: 'none',
+              userSelect: 'none',
+            }}
+          >
+            01
           </div>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1.5fr',
-              gap: '4rem',
-              alignItems: 'start',
-            }}
-            className="case-study-grid"
-          >
-            {/* Left Col: Info */}
-            <div>
-              <span className="text-mono" style={{ display: 'block', marginBottom: '1rem', opacity: 0.5 }}>
-                BRIDAL STUDIO · PALA, KERALA · 2025
-              </span>
-              <SplitText text="NIXTUDIO by Nikita Liby" className="text-h2" tag="h3" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', lineHeight: 1 }} />
-              <p className="text-body" style={{ margin: '2rem 0', maxWidth: 400 }}>
-                A complete digital transformation for Pala&apos;s most premium bridal makeup studio.
-                Website, SEO, GBP optimisation, and a 24/7 WhatsApp AI agent that replies in Nikita&apos;s voice.
-              </p>
-              <MagneticButton href="/work" className="primary">
-                VIEW CASE STUDY
-              </MagneticButton>
-            </div>
+          <div style={{ position: 'relative', zIndex: 3 }}>
+            {/* Category */}
+            <h4 
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: 'var(--text-xs)',
+                letterSpacing: '0.4em',
+                textTransform: 'uppercase',
+                color: 'var(--accent)',
+                marginBottom: '1rem',
+              }}
+            >
+              BRIDAL STUDIO · PALA, KERALA · 2025
+            </h4>
 
-            {/* Right Col: Massive Stats */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-              {metrics.map((m) => (
-                <div
-                  key={m.label}
-                  style={{
-                    padding: '2rem 1.5rem',
-                    borderLeft: '1px solid var(--border)',
-                    borderBottom: '1px solid var(--border)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-heading)',
-                      fontSize: 'clamp(3rem, 6vw, 5rem)',
-                      fontWeight: 300,
-                      color: 'var(--white)',
-                      lineHeight: 1,
-                      letterSpacing: '-0.02em',
-                      marginBottom: '0.5rem',
-                    }}
-                  >
-                    {m.value}
-                  </div>
-                  <div className="text-mono" style={{ opacity: 0.5, fontSize: '0.7rem' }}>
-                    {m.label}
-                  </div>
+            {/* Title */}
+            <h2 
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(3.5rem, 8vw, 8rem)',
+                fontWeight: 300,
+                letterSpacing: '-0.04em',
+                color: 'var(--fg)',
+                lineHeight: 1,
+                marginBottom: '0.5rem',
+              }}
+            >
+              NIXTUDIO
+            </h2>
+
+            {/* Subtitle */}
+            <h3 
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(1.2rem, 2vw, 1.8rem)',
+                fontStyle: 'italic',
+                fontWeight: 300,
+                color: 'var(--fg-2)',
+                marginBottom: 'var(--sp-5)',
+              }}
+            >
+              by Nikita Liby
+            </h3>
+
+            {/* Description */}
+            <p 
+              style={{
+                maxWidth: '380px',
+                fontSize: 'var(--text-base)',
+                color: 'var(--fg-2)',
+                opacity: 0.7,
+                marginBottom: 'var(--sp-8)',
+                lineHeight: 1.75,
+              }}
+            >
+              A premium digital gateway architected from the ground up to establish regional dominance in Kerala&apos;s luxury bridal sector. Zero compromises.
+            </p>
+
+            {/* Stats */}
+            <div 
+              style={{
+                display: 'flex',
+                gap: 'clamp(2rem, 4vw, 4rem)',
+                marginBottom: 'var(--sp-8)',
+                flexWrap: 'wrap'
+              }}
+            >
+              <div>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', color: 'var(--accent)', lineHeight: 1 }}>
+                  464
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
+                <div style={{ fontSize: 'var(--text-xs)', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg-3)', marginTop: '0.5rem' }}>
+                  REVIEWS
+                </div>
+              </div>
+              
+              <div>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', color: 'var(--accent)', lineHeight: 1 }}>
+                  4.9★
+                </div>
+                <div style={{ fontSize: 'var(--text-xs)', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg-3)', marginTop: '0.5rem' }}>
+                  RATING
+                </div>
+              </div>
 
-        {/* Holy Family Dental — Minimal Gallery Block */}
-        <div style={{ borderTop: '1px solid var(--border)', paddingTop: '3rem' }}>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 2fr',
-              gap: '4rem',
-              alignItems: 'center',
-            }}
-            className="case-study-grid"
-          >
-            <div>
-              <span className="text-mono" style={{ display: 'block', marginBottom: '1rem', opacity: 0.5 }}>
-                DENTAL CLINIC · KURAVILANGAD, KERALA
-              </span>
-              <SplitText text="Holy Family Dental Care" className="text-h2" tag="h3" />
-              <p className="text-body" style={{ margin: '1.5rem 0', maxWidth: 400 }}>
-                Digital presence for a specialist dental clinic in Kottayam district.
-              </p>
-              <span
-                className="text-mono"
+              <div>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', color: 'var(--accent)', lineHeight: 1 }}>
+                  #1
+                </div>
+                <div style={{ fontSize: 'var(--text-xs)', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg-3)', marginTop: '0.5rem' }}>
+                  RANKING
+                </div>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <a 
+              href="https://nixtudio.in"
+              target="_blank"
+              rel="noreferrer"
+              className="case-study-link"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                fontSize: 'var(--text-xs)',
+                letterSpacing: '0.3em',
+                textTransform: 'uppercase',
+                color: 'var(--fg-2)',
+                textDecoration: 'none',
+                transition: 'color 300ms var(--ease)',
+                position: 'relative',
+                paddingBottom: '0.5rem',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'var(--accent)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'var(--fg-2)'
+              }}
+              data-cursor="VIEW"
+            >
+              VIEW CASE STUDY ↗
+              <span 
+                className="underline-sweep"
                 style={{
-                  display: 'inline-block',
-                  padding: '0.4rem 1rem',
-                  border: '1px solid var(--gold)',
-                  color: 'var(--gold)',
-                  fontSize: '0.6rem',
-                  letterSpacing: '0.2em',
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '1px',
+                  background: 'var(--accent)',
+                  transformOrigin: 'left',
+                  transform: 'scaleX(0)',
+                  transition: 'transform 300ms var(--ease)',
                 }}
-              >
-                COMING SOON
-              </span>
-            </div>
-
-            <div style={{ position: 'relative', overflow: 'hidden', padding: '2rem', background: 'var(--glass)' }}>
-              <RevealImage
-                src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80"
-                alt="Holy Family Dental Care clinic"
-                style={{ aspectRatio: '16/9', objectFit: 'cover' }}
               />
-            </div>
+              <style jsx>{`
+                .case-study-link:hover .underline-sweep {
+                  transform: scaleX(1) !important;
+                }
+              `}</style>
+            </a>
           </div>
         </div>
       </div>
-
-      
     </section>
   )
 }

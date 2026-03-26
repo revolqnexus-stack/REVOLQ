@@ -2,75 +2,122 @@
 
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollTrigger)
+type AnimationPreset = 'fadeUp' | 'blurIn' | 'slideLeft'
 
 interface SplitTextProps {
   text: string
-  className?: string
+  tag?: keyof React.JSX.IntrinsicElements
+  splitBy?: 'char' | 'word'
+  preset?: AnimationPreset
+  stagger?: number
   delay?: number
-  tag?: 'h1' | 'h2' | 'h3' | 'p' | 'span' | 'div'
+  className?: string
   style?: React.CSSProperties
 }
 
-export default function SplitText({ text, className = '', delay = 0, tag: Tag = 'div', style }: SplitTextProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
+export default function SplitText({
+  text,
+  tag: Tag = 'div',
+  splitBy = 'word',
+  preset = 'fadeUp',
+  stagger,
+  delay = 0,
+  className = '',
+  style = {},
+}: SplitTextProps) {
+  const containerRef = useRef<HTMLElement>(null)
+  
+  // Default stagger logic
+  const defaultStagger = stagger ?? (splitBy === 'char' ? 0.04 : 0.1)
 
   useEffect(() => {
     if (!containerRef.current) return
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReducedMotion) return
+    const spans = containerRef.current.querySelectorAll('.split-inner')
+    if (!spans.length) return
 
-    const chars = containerRef.current.querySelectorAll('.split-char')
+    // Pre-setup starting states based on preset
+    if (preset === 'fadeUp') {
+      gsap.set(spans, { y: '100%', opacity: 0 })
+    } else if (preset === 'blurIn') {
+      gsap.set(spans, { filter: 'blur(20px)', opacity: 0 })
+    } else if (preset === 'slideLeft') {
+      gsap.set(spans, { x: -30, opacity: 0 })
+    }
 
-    gsap.set(chars, { y: '110%' })
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Unobserve to trigger only once
+            observer.unobserve(entry.target)
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top 85%',
-        once: true,
+            // Trigger animations
+            if (preset === 'fadeUp') {
+              gsap.to(spans, {
+                y: '0%',
+                opacity: 1,
+                duration: 0.8,
+                stagger: defaultStagger,
+                delay,
+                ease: 'power3.out',
+              })
+            } else if (preset === 'blurIn') {
+              gsap.to(spans, {
+                filter: 'blur(0px)',
+                opacity: 1,
+                duration: 1.2,
+                stagger: defaultStagger,
+                delay,
+                ease: 'cubic-bezier(0.0, 0.0, 0.2, 1)',
+              })
+            } else if (preset === 'slideLeft') {
+              gsap.to(spans, {
+                x: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: defaultStagger,
+                delay,
+                ease: 'power3.out',
+              })
+            }
+          }
+        })
       },
-    })
+      { threshold: 0.1 } // trigger when 10% visible
+    )
 
-    tl.to(chars, {
-      y: '0%',
-      duration: 0.8,
-      stagger: 0.022,
-      ease: 'power4.out',
-      delay,
-    })
+    observer.observe(containerRef.current)
 
     return () => {
-      tl.kill()
+      observer.disconnect()
     }
-  }, [delay, text])
+  }, [preset, defaultStagger, delay])
 
-  const words = text.split(' ')
+  const parts = splitBy === 'char' ? text.split('') : text.split(' ')
 
   return (
-    <Tag ref={containerRef as React.RefObject<HTMLElement & HTMLDivElement>} className={className} aria-label={text} style={style}>
-      {words.map((word, wi) => (
-        <span key={wi} style={{ display: 'inline-block', whiteSpace: 'pre' }}>
-          {word.split('').map((char, ci) => (
-            <span
-              key={ci}
-              style={{ display: 'inline-block', overflow: 'hidden' }}
-            >
-              <span className="split-char" style={{ display: 'inline-block' }}>
-                {char}
-              </span>
-            </span>
-          ))}
-          {wi < words.length - 1 && (
-            <span style={{ display: 'inline-block', overflow: 'hidden' }}>
-              <span className="split-char" style={{ display: 'inline-block' }}>
-                &nbsp;
-              </span>
-            </span>
-          )}
+    <Tag ref={containerRef} className={className} style={{ ...style }}>
+      {parts.map((part, i) => (
+        <span
+          key={i}
+          className="split-outer"
+          style={{
+            display: 'inline-block',
+            overflow: 'hidden',
+            marginRight: splitBy === 'word' ? '0.25em' : '0',
+          }}
+        >
+          <span
+            className="split-inner"
+            style={{
+              display: 'inline-block',
+              willChange: 'transform, opacity, filter',
+            }}
+          >
+            {part === ' ' ? '\u00A0' : part}
+          </span>
         </span>
       ))}
     </Tag>

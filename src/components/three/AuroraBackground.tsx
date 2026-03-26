@@ -83,41 +83,26 @@ const fragmentShader = `
     float n4 = snoise(vec3(uv * 8.0 + 30.0, t * 1.6)) * 0.0625;
     float noise = n1 + n2 + n3 + n4;
     
-    // Scroll-reactive color palette shift
-    float scrollShift = uScroll * 0.3;
-    
-    // 5 color zones
-    vec3 colA = vec3(0.031, 0.027, 0.027); // matches --bg
-    vec3 colB = vec3(0.20, 0.12, 0.08);    // warm brown-red
-    vec3 colC = vec3(0.35, 0.25, 0.10);    // amber glow
-    vec3 colD = vec3(0.08, 0.06, 0.10);    // deep violet shadow
-    vec3 colE = vec3(0.031, 0.027, 0.027); // matches --bg
-    
-    float colorPos = noise * 0.5 + 0.5 + scrollShift;
-    colorPos = mod(colorPos, 1.0);
-    
-    vec3 color;
-    if (colorPos < 0.25) {
-      color = mix(colA, colB, colorPos * 4.0);
-    } else if (colorPos < 0.5) {
-      color = mix(colB, colC, (colorPos - 0.25) * 4.0);
-    } else if (colorPos < 0.75) {
-      color = mix(colC, colD, (colorPos - 0.5) * 4.0);
-    } else {
-      color = mix(colD, colE, (colorPos - 0.75) * 4.0);
-    }
-    
-    // Scale down the brightness significantly
-    color *= 0.18;
-    
-    // Glowing horizontal band that moves with scroll
-    float band = smoothstep(0.05, 0.0, abs(uv.y - mod(uScroll * 0.5 + t * 0.3, 1.4) + 0.2)) * 0.12;
-    color += vec3(band * 0.77, band * 0.60, band * 0.60);
-    
-    // Subtle grid lines
-    float gridX = smoothstep(0.98, 1.0, sin(uv.x * 40.0 + t) * 0.5 + 0.5) * 0.02;
-    float gridY = smoothstep(0.98, 1.0, sin(uv.y * 40.0 + t * 0.7) * 0.5 + 0.5) * 0.02;
-    color += vec3(gridX + gridY) * vec3(0.42, 0.37, 0.66);
+    // 5 color zones (warm-dark palette)
+    vec3 colA = vec3(0.031, 0.027, 0.027);  // --bg: warm black
+    vec3 colB = vec3(0.18, 0.10, 0.06);     // deep warm brown-red
+    vec3 colC = vec3(0.38, 0.24, 0.08);     // --accent glow: amber
+    vec3 colD = vec3(0.07, 0.05, 0.09);     // deep violet-brown shadow
+    vec3 colE = vec3(0.12, 0.08, 0.04);     // warm dark brown
+
+    // Color mixing logic:
+    float noiseAgg = n1 * 0.5 + n2 * 0.28 + n3 + n4;
+    noiseAgg = noiseAgg * 0.5 + 0.5;
+
+    vec3 color = mix(colA, colB, smoothstep(0.2, 0.55, noiseAgg));
+    color = mix(color, colC, smoothstep(0.55, 0.82, noiseAgg) * 0.45);
+    color = mix(color, colD, smoothstep(0.0, 0.2, noiseAgg) * 0.6);
+    color = mix(color, colE, sin(uScroll * 3.14159) * 0.25);
+
+    // Warm glow band:
+    float bandY = 0.48 - uScroll * 0.28;
+    float band = exp(-pow((vUv.y - bandY) * 3.2, 2.0)) * 0.18;
+    color += vec3(band * 0.45, band * 0.28, band * 0.08);  // warm amber band
     
     // Vignette
     float vig = 1.0 - smoothstep(0.3, 1.2, length(vUv - 0.5) * 1.4);
@@ -275,6 +260,8 @@ export default function AuroraBackground() {
         position: 'fixed',
         inset: 0,
         zIndex: 0,
+        pointerEvents: 'none',
+        opacity: 0.92,
       }}
     />
   )

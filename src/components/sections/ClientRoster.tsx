@@ -1,107 +1,112 @@
 'use client'
 
-import { useRef } from 'react'
+import { useState } from 'react'
 
 const clients = [
-  { domain: 'nixtudio.in', url: 'https://nixtudio.in' },
-  { domain: 'holyfamilydentalcare.in', url: 'https://holyfamilydentalcare.in' },
-  { domain: '[ next one ].in', url: '/contact' },
+  { domain: 'nixtudio.in', label: 'Bridal Studio · Pala', url: 'https://nixtudio.in' },
+  { domain: 'holyfamilydental.in', label: 'Dental Clinic · Kuravilangad', url: 'https://holyfamilydental.in' },
+  { domain: 'revolq.com', label: 'Digital Labs · Kochi', url: '#' },
 ]
 
 export default function ClientRoster() {
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
+
   return (
-    <section className="section-padding" style={{ paddingBottom: '2rem', borderTop: '1px solid var(--border)' }}>
-      <div className="max-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <h4 
-          className="text-mono" 
+    <section 
+      style={{ 
+        padding: 'var(--sp-9) clamp(2rem, 8vw, 8rem)',
+        background: 'var(--bg)',
+      }}
+    >
+      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+        {/* Section Label */}
+        <span 
           style={{ 
-            fontSize: '0.65rem', 
-            letterSpacing: '0.2em', 
-            opacity: 0.4, 
-            marginBottom: '3rem',
-            textAlign: 'center'
+            display: 'block', 
+            fontFamily: 'var(--font-body)',
+            fontSize: 'var(--text-xs)', 
+            letterSpacing: '0.5em', 
+            color: 'var(--accent)', 
+            textTransform: 'uppercase', 
+            marginBottom: 'var(--sp-8)' 
           }}
         >
           LIVE IN THE WILD
-        </h4>
-        
+        </span>
+
+        {/* Link List */}
         <div 
-          style={{ 
-            display: 'flex', 
-            flexWrap: 'wrap', 
-            gap: 'clamp(2rem, 5vw, 5rem)', 
-            justifyContent: 'center',
-            width: '100%' 
-          }}
+          onMouseLeave={() => setHoveredIdx(null)}
+          style={{ display: 'flex', flexDirection: 'column', gap: 0 }}
         >
-          {clients.map((client) => (
-            <a
-              key={client.domain}
-              href={client.url}
-              target={client.url.startsWith('http') ? '_blank' : '_self'}
-              rel="noopener noreferrer"
-              className="client-link group"
-              style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
-                color: 'var(--white)',
-                textDecoration: 'none',
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                opacity: 0.5,
-                transition: 'opacity 0.4s ease',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.opacity = '1'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.opacity = '0.5'
-              }}
-              data-cursor="VIEW"
-            >
-              <span style={{ position: 'relative' }}>
-                {client.domain}
-                <span 
-                  className="link-underline"
-                  style={{
-                    position: 'absolute',
-                    bottom: '-0.2rem',
-                    left: 0,
-                    width: '100%',
-                    height: '1px',
-                    background: 'var(--white)',
-                    transformOrigin: 'left',
-                    transform: 'scaleX(0)',
-                    transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                  }}
-                />
-              </span>
-              <span 
-                className="arrow"
+          {clients.map((client, i) => {
+            const isHovered = hoveredIdx === i
+            const isDimmed = hoveredIdx !== null && !isHovered
+
+            return (
+              <a
+                key={client.domain}
+                href={client.url}
+                target={client.url.startsWith('http') ? '_blank' : '_self'}
+                rel="noopener noreferrer"
+                onMouseEnter={() => setHoveredIdx(i)}
+                data-cursor="view"
                 style={{
-                  fontSize: '0.6em',
-                  opacity: 0,
-                  transform: 'translate(-10px, 10px)',
-                  transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-                  color: 'var(--rose)'
+                  display: 'grid',
+                  gridTemplateColumns: '1fr auto',
+                  alignItems: 'center',
+                  padding: '1.5rem 0',
+                  borderBottom: `1px solid ${isHovered ? 'var(--border-accent)' : 'var(--border)'}`,
+                  textDecoration: 'none',
+                  opacity: isDimmed ? 0.35 : 1,
+                  transition: 'all 300ms var(--ease)',
                 }}
               >
-                ↗
-              </span>
-              
-              <style jsx>{`
-                .client-link:hover .link-underline {
-                  transform: scaleX(1) !important;
-                }
-                .client-link:hover .arrow {
-                  opacity: 1 !important;
-                  transform: translate(0, 0) !important;
-                }
-              `}</style>
-            </a>
-          ))}
+                {/* Left: Domain */}
+                <span 
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontStyle: 'italic',
+                    fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+                    fontWeight: 300,
+                    letterSpacing: '-0.02em',
+                    color: isHovered ? 'var(--fg)' : 'var(--fg-2)',
+                    transition: 'color 300ms var(--ease)',
+                  }}
+                >
+                  {client.domain}
+                </span>
+
+                {/* Right: Label + Arrow */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                  <span 
+                    style={{
+                      fontFamily: 'var(--font-body)',
+                      fontSize: 'var(--text-xs)',
+                      letterSpacing: '0.2em',
+                      textTransform: 'uppercase',
+                      color: 'var(--fg-3)',
+                      opacity: isHovered ? 1 : 0.4,
+                      transition: 'opacity 300ms var(--ease)',
+                    }}
+                  >
+                    {client.label}
+                  </span>
+                  <span 
+                    style={{
+                      fontSize: 'var(--text-sm)',
+                      color: 'var(--fg-3)',
+                      opacity: isHovered ? 1 : 0,
+                      transform: isHovered ? 'translateX(0)' : 'translateX(-8px)',
+                      transition: 'all 300ms var(--ease)',
+                    }}
+                  >
+                    ↗
+                  </span>
+                </div>
+              </a>
+            )
+          })}
         </div>
       </div>
     </section>
