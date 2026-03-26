@@ -41,7 +41,7 @@ export default function Nav() {
           top: 0,
           left: 0,
           right: 0,
-          zIndex: 100,
+          zIndex: 500,
           padding: '1.8rem clamp(2rem, 6vw, 5rem)',
           display: 'flex',
           alignItems: 'center',
@@ -84,7 +84,7 @@ export default function Nav() {
                   fontSize: 'var(--text-xs)',
                   fontWeight: 200,
                   letterSpacing: '0.2em',
-                  color: isActive ? 'var(--fg)' : 'var(--fg-3)',
+                  color: isActive ? 'var(--fg)' : 'var(--fg-2)',
                   textDecoration: 'none',
                   textTransform: 'uppercase',
                   transition: 'color 200ms var(--ease)',
@@ -93,7 +93,7 @@ export default function Nav() {
                   e.currentTarget.style.color = 'var(--fg)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.color = isActive ? 'var(--fg)' : 'var(--fg-3)'
+                  e.currentTarget.style.color = isActive ? 'var(--fg)' : 'var(--fg-2)'
                 }}
               >
                 {link.label}

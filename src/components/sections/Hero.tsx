@@ -25,7 +25,7 @@ export default function Hero() {
       gsap.fromTo(
         eyebrowRef.current,
         { y: 16, opacity: 0 },
-        { y: 0, opacity: 0.5, duration: 0.8, delay: 0.3, ease: 'power2.out' }
+        { y: 0, opacity: 0.85, duration: 0.8, delay: 0.3, ease: 'power2.out' }
       )
     }
 
@@ -52,7 +52,7 @@ export default function Hero() {
       gsap.fromTo(
         subRef.current,
         { opacity: 0 },
-        { opacity: 0.65, duration: 1, delay: 1.2, ease: 'power2.out' }
+        { opacity: 0.9, duration: 1, delay: 1.2, ease: 'power2.out' }
       )
     }
 
@@ -88,8 +88,10 @@ export default function Hero() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-start',
+        paddingTop: '5rem', // Offset for fixed Nav
         paddingLeft: 'var(--hero-padding, clamp(2rem, 8vw, 8rem))',
         paddingRight: 'var(--hero-padding, clamp(2rem, 8vw, 8rem))',
+        paddingBottom: '2rem',
         overflow: 'hidden',
       }}
     >
@@ -97,6 +99,7 @@ export default function Hero() {
         @media (max-width: 768px) {
           section {
             --hero-padding: 1rem !important;
+            padding-top: 6rem !important;
           }
         }
       `}</style>
@@ -109,7 +112,7 @@ export default function Hero() {
             fontFamily: 'var(--font-body)',
             fontSize: 'var(--text-xs)',
             letterSpacing: '0.5em',
-            color: 'var(--fg-3)',
+            color: 'var(--fg-2)', // Lightened
             textTransform: 'uppercase',
             marginBottom: 'var(--sp-6)',
             opacity: 0, // JS will handle
@@ -207,7 +210,7 @@ export default function Hero() {
             style={{
               background: 'transparent',
               color: 'var(--fg-2)',
-              border: '1px solid var(--border)',
+              border: '1px solid var(--border-hover)', // Stronger resting border
               padding: '0.85rem 2.5rem',
               fontFamily: 'var(--font-body)',
               fontSize: '0.7rem',
@@ -230,7 +233,7 @@ export default function Hero() {
           style={{
             fontFamily: 'var(--font-mono)',
             fontSize: 'var(--text-xs)',
-            color: 'var(--fg-3)',
+            color: 'var(--fg-2)', // Lightened
             letterSpacing: '0.15em',
             marginTop: 'var(--sp-5)',
             opacity: 0,
@@ -268,7 +271,7 @@ export default function Hero() {
             fontFamily: 'var(--font-body)',
             fontSize: 'var(--text-xs)', 
             letterSpacing: '0.35em',
-            color: 'var(--fg-3)',
+            color: 'var(--fg-2)', // Lightened
           }}
         >
           SCROLL

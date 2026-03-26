@@ -89,8 +89,8 @@ export default function Services() {
                   style={{
                     fontFamily: 'var(--font-display)',
                     fontSize: '0.75rem',
-                    color: 'var(--fg-3)',
-                    opacity: isHovered ? 1 : 0.3,
+                    color: 'var(--fg-2)', // Lightened
+                    opacity: isHovered ? 1 : 0.45, // Boosted resting opacity
                     transition: 'opacity 350ms var(--ease)'
                   }}
                 >
@@ -130,7 +130,7 @@ export default function Services() {
                           fontFamily: 'var(--font-mono)',
                           fontSize: 'var(--text-xs)',
                           letterSpacing: '0.15em',
-                          color: 'var(--fg-3)',
+                          color: 'var(--fg-2)', // Lightened
                           textTransform: 'uppercase',
                         }}
                       >

@@ -7,8 +7,8 @@
   --color-bg-3: #1c1818;
   
   --color-fg: #ede8e3;
-  --color-fg-2: #a09890;
-  --color-fg-3: #5c5450;
+  --color-fg-2: #b8b0a8;
+  --color-fg-3: #8a827e;
   --color-fg-inv: #080707;
   
   --color-accent: #c8a96e;
@@ -48,8 +48,8 @@
 
   /* ── FOREGROUND ── */
   --fg:           #ede8e3;   /* primary text — warm off-white, NEVER pure white */
-  --fg-2:         #a09890;   /* secondary text — muted warm grey */
-  --fg-3:         #5c5450;   /* tertiary text — very muted */
+  --fg-2:         #b8b0a8;   /* secondary text — muted warm grey (lightened) */
+  --fg-3:         #8a827e;   /* tertiary text — meta/labels (lightened) */
   --fg-inv:       #080707;   /* text on light/accent backgrounds */
 
   /* ── SINGLE ACCENT — warm gold. NOTHING ELSE. ── */
