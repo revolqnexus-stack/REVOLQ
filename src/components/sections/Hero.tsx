@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useCallback } from 'react'
 import gsap from 'gsap'
 import SplitText from '@/components/ui/SplitText'
 import MagneticButton from '@/components/ui/MagneticButton'
@@ -28,7 +28,7 @@ export default function Hero() {
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['10deg', '-10deg'])
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-10deg', '10deg'])
 
-  const handleMouseMove = (e: React.MouseEvent | MouseEvent) => {
+  const handleMouseMove = useCallback((e: React.MouseEvent | MouseEvent) => {
     if (window.matchMedia('(pointer: coarse)').matches) return
     const rect = containerRef.current?.getBoundingClientRect()
     if (!rect) return
@@ -38,24 +38,21 @@ export default function Hero() {
     const yPct = (mouseY / rect.height) - 0.5
     x.set(xPct)
     y.set(yPct)
-  }
+  }, [x, y])
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     x.set(0)
     y.set(0)
-  }
+  }, [x, y])
 
   useEffect(() => {
     window.addEventListener('mousemove', handleMouseMove)
     return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
+  }, [handleMouseMove])
   // ------------------------------------
 
   useEffect(() => {
     // Entrance animations
-    const tl = gsap.timeline()
-    
-    // ... existing GSAP logic ...
 
     // Eyebrow
     if (eyebrowRef.current) {
@@ -118,51 +115,11 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      style={{
-        position: 'relative',
-        width: '100%',
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        paddingTop: '5rem', // Offset for fixed Nav
-        paddingLeft: 'var(--hero-padding, clamp(2rem, 8vw, 8rem))',
-        paddingRight: 'var(--hero-padding, clamp(2rem, 8vw, 8rem))',
-        paddingBottom: '2rem',
-        overflow: 'hidden',
-      }}
+      className="relative w-full min-h-screen flex items-center justify-start pb-8 pt-20 px-8 lg:pt-20 lg:px-[clamp(2rem,8vw,8rem)] overflow-hidden max-md:pt-24 max-md:px-4"
     >
-      <style jsx>{`
-        @media (max-width: 768px) {
-          section {
-            --hero-padding: 1rem !important;
-            padding-top: 6rem !important;
-          }
-        }
-      `}</style>
       <div 
-        className="hero-grid"
-        style={{ 
-          position: 'relative', 
-          zIndex: 2, 
-          width: '100%',
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 0.8fr)',
-          alignItems: 'center',
-          gap: '4rem'
-        }}
+        className="hero-grid relative z-10 w-full grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] items-center gap-16"
       >
-        <style jsx>{`
-          @media (max-width: 1023px) {
-            .hero-grid {
-              grid-template-columns: 1fr !important;
-              gap: 3rem !important;
-            }
-            .hero-mockup-wrapper {
-              display: none !important;
-            }
-          }
-        `}</style>
         
         <div className="hero-text">
           {/* Eyebrow */}

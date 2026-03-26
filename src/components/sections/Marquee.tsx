@@ -49,7 +49,7 @@ export default function Marquee() {
       >
         {/* Track 1: Moving Left */}
         <div 
-          className="marquee-track group-hover:pause"
+          className="marquee-track pause-on-hover"
           style={{
             display: 'flex',
             width: 'max-content',
@@ -94,7 +94,7 @@ export default function Marquee() {
 
         {/* Track 2: Moving Right */}
         <div 
-          className="marquee-track reverse group-hover:pause"
+          className="marquee-track reverse pause-on-hover"
           style={{
             display: 'flex',
             width: 'max-content',
@@ -137,20 +137,6 @@ export default function Marquee() {
           ))}
         </div>
       </div>
-
-      <style jsx global>{`
-        @keyframes marqueeLeft {
-          from { transform: translateX(0); }
-          to { transform: translateX(-25%); } // Moving quarter distance since we duplicated 4x
-        }
-        @keyframes marqueeRight {
-          from { transform: translateX(-25%); }
-          to { transform: translateX(0); }
-        }
-        .group-hover\\:pause:hover, .group:hover .group-hover\\:pause {
-          animation-play-state: paused !important;
-        }
-      `}</style>
     </section>
   )
 }

@@ -220,7 +220,7 @@ export default function CaseStudies() {
               href="https://nixtudio.in"
               target="_blank"
               rel="noreferrer"
-              className="case-study-link"
+              className="case-study-link group"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -244,24 +244,8 @@ export default function CaseStudies() {
             >
               VIEW CASE STUDY ↗
               <span 
-                className="underline-sweep"
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '1px',
-                  background: 'var(--accent)',
-                  transformOrigin: 'left',
-                  transform: 'scaleX(0)',
-                  transition: 'transform 300ms var(--ease)',
-                }}
+                className="underline-sweep absolute bottom-0 left-0 w-full h-[1px] bg-accent origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"
               />
-              <style jsx>{`
-                .case-study-link:hover .underline-sweep {
-                  transform: scaleX(1) !important;
-                }
-              `}</style>
             </a>
           </div>
         </div>
