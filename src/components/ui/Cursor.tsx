@@ -12,47 +12,31 @@ export default function Cursor() {
   const mouse = useRef({ x: 0, y: 0 })
   const ringPos = useRef({ x: 0, y: 0 })
   const afRef = useRef<number>(0)
+  
+  // Ultimate Trail State
+  const trails = useRef<{ x: number, y: number }[]>(Array(5).fill({ x: 0, y: 0 }))
+  const trailRefs = useRef<(HTMLDivElement | null)[]>([])
 
   useEffect(() => {
-    // Hide on mobile (pointer: coarse)
     if (window.matchMedia('(pointer: coarse)').matches) return
 
     const handleMouseMove = (e: MouseEvent) => {
       mouse.current = { x: e.clientX, y: e.clientY }
-      
-      // Dot follows immediately
       if (dotRef.current) {
-        // center the 5x5 dot
         dotRef.current.style.transform = `translate(${e.clientX - 2.5}px, ${e.clientY - 2.5}px)`
       }
     }
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement
-      
       const dragEl = target.closest('[data-cursor="drag"]')
-      if (dragEl) {
-        setHoverState('drag')
-        return
-      }
-      
+      if (dragEl) { setHoverState('drag'); return }
       const viewEl = target.closest('img, [data-cursor="view"]')
-      if (viewEl) {
-        setHoverState('view')
-        return
-      }
-
+      if (viewEl) { setHoverState('view'); return }
       const buttonEl = target.closest('button, [role="button"]')
-      if (buttonEl) {
-        setHoverState('button')
-        return
-      }
-
+      if (buttonEl) { setHoverState('button'); return }
       const linkEl = target.closest('a')
-      if (linkEl) {
-        setHoverState('link')
-        return
-      }
+      if (linkEl) { setHoverState('link'); return }
     }
 
     const handleMouseOut = (e: MouseEvent) => {
@@ -66,21 +50,29 @@ export default function Cursor() {
     document.addEventListener('mouseover', handleMouseOver)
     document.addEventListener('mouseout', handleMouseOut)
 
-    // Render loop for ring lerp
     const tick = () => {
-      // Lerp ring towards mouse
-      ringPos.current.x += (mouse.current.x - ringPos.current.x) * 0.1
-      ringPos.current.y += (mouse.current.y - ringPos.current.y) * 0.1
+      // Main ring lerp
+      ringPos.current.x += (mouse.current.x - ringPos.current.x) * 0.15
+      ringPos.current.y += (mouse.current.y - ringPos.current.y) * 0.15
 
+      const size = hoverState === 'default' ? 38 : (hoverState === 'link' || hoverState === 'button' ? 64 : 90)
+      
       if (ringRef.current) {
-        // Current state sizes
-        let size = 38
-        if (hoverState === 'link' || hoverState === 'button') size = 64
-        if (hoverState === 'view' || hoverState === 'drag') size = 90
-        
-        // Center the ring
         ringRef.current.style.transform = `translate(${ringPos.current.x - size / 2}px, ${ringPos.current.y - size / 2}px)`
       }
+
+      // Ultimate Trails Math
+      trails.current.forEach((trail, i) => {
+        const factor = 0.15 - i * 0.02
+        trail.x += (mouse.current.x - trail.x) * factor
+        trail.y += (mouse.current.y - trail.y) * factor
+        
+        const el = trailRefs.current[i]
+        if (el) {
+          el.style.transform = `translate(${trail.x - 2}px, ${trail.y - 2}px)`
+          el.style.opacity = (0.4 - i * 0.08).toString()
+        }
+      })
 
       afRef.current = requestAnimationFrame(tick)
     }
@@ -95,18 +87,33 @@ export default function Cursor() {
     }
   }, [hoverState])
 
-  // Map state to DOM properties
-  const isDefault = hoverState === 'default'
-  const isButton = hoverState === 'button'
   const isTextMode = hoverState === 'view' || hoverState === 'drag'
   const textContent = hoverState === 'view' ? 'VIEW' : hoverState === 'drag' ? 'DRAG' : ''
-  
-  let ringSize = 38
-  if (hoverState === 'link' || hoverState === 'button') ringSize = 64
-  if (isTextMode) ringSize = 90
+  const ringSize = hoverState === 'default' ? 38 : (hoverState === 'link' || hoverState === 'button' ? 64 : 90)
 
   return (
     <div className="cursor-container max-md:hidden">
+      {/* ULTIMATE TRAILS */}
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div
+          key={i}
+          ref={(el) => { if (el) trailRefs.current[i] = el }}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: `${4 - i * 0.5}px`,
+            height: `${4 - i * 0.5}px`,
+            background: 'var(--accent)',
+            borderRadius: '50%',
+            pointerEvents: 'none',
+            zIndex: 9997,
+            mixBlendMode: 'screen',
+            willChange: 'transform',
+          }}
+        />
+      ))}
+
       {/* DOT */}
       <div
         ref={dotRef}
@@ -121,7 +128,7 @@ export default function Cursor() {
           pointerEvents: 'none',
           zIndex: 9999,
           mixBlendMode: 'screen',
-          opacity: isDefault ? 1 : 0,
+          opacity: hoverState === 'default' ? 1 : 0,
           transition: 'opacity 0.2s ease',
           willChange: 'transform',
         }}
@@ -138,7 +145,7 @@ export default function Cursor() {
           height: ringSize,
           borderRadius: '50%',
           border: '1px solid rgba(200,169,110,0.35)',
-          background: isButton ? 'rgba(200,169,110,0.08)' : 'transparent',
+          background: hoverState === 'button' ? 'rgba(200,169,110,0.08)' : 'transparent',
           pointerEvents: 'none',
           zIndex: 9998,
           mixBlendMode: 'difference',
@@ -167,3 +174,4 @@ export default function Cursor() {
     </div>
   )
 }
+

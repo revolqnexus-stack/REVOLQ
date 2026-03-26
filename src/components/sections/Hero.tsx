@@ -4,6 +4,8 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import SplitText from '@/components/ui/SplitText'
 import MagneticButton from '@/components/ui/MagneticButton'
+import ChatMockup from '@/components/ui/ChatMockup'
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -16,9 +18,44 @@ export default function Hero() {
   const phoneRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
+  // -- Performance Optimized 3D Tilt --
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+
+  const mouseXSpring = useSpring(x)
+  const mouseYSpring = useSpring(y)
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['10deg', '-10deg'])
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-10deg', '10deg'])
+
+  const handleMouseMove = (e: React.MouseEvent | MouseEvent) => {
+    if (window.matchMedia('(pointer: coarse)').matches) return
+    const rect = containerRef.current?.getBoundingClientRect()
+    if (!rect) return
+    const mouseX = e.clientX - rect.left
+    const mouseY = e.clientY - rect.top
+    const xPct = (mouseX / rect.width) - 0.5
+    const yPct = (mouseY / rect.height) - 0.5
+    x.set(xPct)
+    y.set(yPct)
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+  }
+
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+  // ------------------------------------
+
   useEffect(() => {
     // Entrance animations
     const tl = gsap.timeline()
+    
+    // ... existing GSAP logic ...
 
     // Eyebrow
     if (eyebrowRef.current) {
@@ -103,144 +140,187 @@ export default function Hero() {
           }
         }
       `}</style>
-      <div style={{ position: 'relative', zIndex: 2, maxWidth: '1000px' }}>
+      <div 
+        className="hero-grid"
+        style={{ 
+          position: 'relative', 
+          zIndex: 2, 
+          width: '100%',
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 0.8fr)',
+          alignItems: 'center',
+          gap: '4rem'
+        }}
+      >
+        <style jsx>{`
+          @media (max-width: 1023px) {
+            .hero-grid {
+              grid-template-columns: 1fr !important;
+              gap: 3rem !important;
+            }
+            .hero-mockup-wrapper {
+              display: none !important;
+            }
+          }
+        `}</style>
         
-        {/* Eyebrow */}
-        <div 
-          ref={eyebrowRef}
-          style={{ 
-            fontFamily: 'var(--font-body)',
-            fontSize: 'var(--text-xs)',
-            letterSpacing: '0.5em',
-            color: 'var(--fg-2)', // Lightened
-            textTransform: 'uppercase',
-            marginBottom: 'var(--sp-6)',
-            opacity: 0, // JS will handle
-          }}
-        >
-          KERALA · INDIA · DIGITAL AGENCY
-        </div>
-
-        {/* Headline */}
-        <div style={{ marginBottom: 'var(--sp-7)' }}>
-          <div ref={line1Ref} style={{ overflow: 'hidden', paddingBottom: '0.1em', marginTop: '-0.1em' }}>
-            <h1 style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'var(--text-hero)',
-              fontWeight: 300,
-              lineHeight: 0.9,
-              letterSpacing: '-0.04em',
-              color: 'var(--fg)'
-            }}>
-              We build
-            </h1>
-          </div>
-          
-          <div ref={line2Ref} style={{ overflow: 'hidden', paddingBottom: '0.1em', marginTop: '-0.1em' }}>
-            <h1 style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'var(--text-hero)',
-              fontWeight: 300,
-              lineHeight: 0.9,
-              letterSpacing: '-0.04em',
-              fontStyle: 'italic',
-              color: 'var(--accent)'
-            }}>
-              digital systems
-            </h1>
-          </div>
-          
-          <div ref={line3Ref} style={{ overflow: 'hidden', paddingBottom: '0.1em', marginTop: '-0.1em' }}>
-            <h1 style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'var(--text-hero)',
-              fontWeight: 300,
-              lineHeight: 0.9,
-              letterSpacing: '-0.04em',
-              color: 'var(--fg)'
-            }}>
-              that work.
-            </h1>
-          </div>
-        </div>
-
-        {/* Sub */}
-        <p
-          ref={subRef}
-          style={{
-            fontFamily: 'var(--font-body)',
-            fontWeight: 200,
-            fontSize: 'var(--text-base)',
-            color: 'var(--fg-2)',
-            lineHeight: 1.8,
-            letterSpacing: '0.04em',
-            maxWidth: '420px',
-            marginBottom: 'var(--sp-6)',
-            opacity: 0,
-          }}
-        >
-          Web development, SEO, AI automation, and brand
-          strategy for businesses that refuse to be invisible.
-        </p>
-
-        {/* Buttons */}
-        <div ref={btnsRef} style={{ display: 'flex', gap: 'var(--sp-5)', flexWrap: 'wrap', opacity: 0 }}>
-          <MagneticButton
-            href="/contact"
-            style={{
-              background: 'var(--accent)',
-              color: 'var(--fg-inv)',
-              border: '1px solid var(--accent)',
-              padding: '0.85rem 2.5rem',
+        <div className="hero-text">
+          {/* Eyebrow */}
+          <div 
+            ref={eyebrowRef}
+            style={{ 
               fontFamily: 'var(--font-body)',
-              fontSize: '0.7rem',
-              fontWeight: 300,
-              letterSpacing: '0.2em',
+              fontSize: 'var(--text-xs)',
+              letterSpacing: '0.5em',
+              color: 'var(--fg-2)', // Lightened
               textTransform: 'uppercase',
-              borderRadius: '0',
-              transition: 'all var(--dur-base) var(--ease)',
-              textDecoration: 'none',
-              display: 'inline-block'
+              marginBottom: 'var(--sp-6)',
+              opacity: 0, // JS will handle
             }}
           >
-            START A PROJECT
-          </MagneticButton>
-          <MagneticButton
-            href="/work"
+            KERALA · INDIA · DIGITAL AGENCY
+          </div>
+
+          {/* Headline */}
+          <div style={{ marginBottom: 'var(--sp-7)' }}>
+            <div ref={line1Ref} style={{ overflow: 'hidden', paddingBottom: '0.1em', marginTop: '-0.1em' }}>
+              <h1 style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'var(--text-hero)',
+                fontWeight: 300,
+                lineHeight: 0.9,
+                letterSpacing: '-0.04em',
+                color: 'var(--fg)'
+              }}>
+                We build
+              </h1>
+            </div>
+            
+            <div ref={line2Ref} style={{ overflow: 'hidden', paddingBottom: '0.1em', marginTop: '-0.1em' }}>
+              <h1 style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'var(--text-hero)',
+                fontWeight: 300,
+                lineHeight: 0.9,
+                letterSpacing: '-0.04em',
+                fontStyle: 'italic',
+                color: 'var(--accent)'
+              }}>
+                digital systems
+              </h1>
+            </div>
+            
+            <div ref={line3Ref} style={{ overflow: 'hidden', paddingBottom: '0.1em', marginTop: '-0.1em' }}>
+              <h1 style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'var(--text-hero)',
+                fontWeight: 300,
+                lineHeight: 0.9,
+                letterSpacing: '-0.04em',
+                color: 'var(--fg)'
+              }}>
+                that work.
+              </h1>
+            </div>
+          </div>
+
+          {/* Sub */}
+          <p
+            ref={subRef}
             style={{
-              background: 'transparent',
+              fontFamily: 'var(--font-body)',
+              fontWeight: 200,
+              fontSize: 'var(--text-base)',
               color: 'var(--fg-2)',
-              border: '1px solid var(--border-hover)', // Stronger resting border
-              padding: '0.85rem 2.5rem',
-              fontFamily: 'var(--font-body)',
-              fontSize: '0.7rem',
-              fontWeight: 300,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              borderRadius: '0',
-              transition: 'all var(--dur-base) var(--ease)',
-              textDecoration: 'none',
-              display: 'inline-block'
+              lineHeight: 1.8,
+              letterSpacing: '0.04em',
+              maxWidth: '420px',
+              marginBottom: 'var(--sp-6)',
+              opacity: 0,
             }}
           >
-            SEE OUR WORK
-          </MagneticButton>
+            Web development, SEO, AI automation, and brand
+            strategy for businesses that refuse to be invisible.
+          </p>
+
+          {/* Buttons */}
+          <div ref={btnsRef} style={{ display: 'flex', gap: 'var(--sp-5)', flexWrap: 'wrap', opacity: 0 }}>
+            <MagneticButton
+              href="/contact"
+              style={{
+                background: 'var(--accent)',
+                color: 'var(--fg-inv)',
+                border: '1px solid var(--accent)',
+                padding: '0.85rem 2.5rem',
+                fontFamily: 'var(--font-body)',
+                fontSize: '0.7rem',
+                fontWeight: 300,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                borderRadius: '0',
+                transition: 'all var(--dur-base) var(--ease)',
+                textDecoration: 'none',
+                display: 'inline-block'
+              }}
+            >
+              START A PROJECT
+            </MagneticButton>
+            <MagneticButton
+              href="/work"
+              style={{
+                background: 'transparent',
+                color: 'var(--fg-2)',
+                border: '1px solid var(--border-hover)', // Stronger resting border
+                padding: '0.85rem 2.5rem',
+                fontFamily: 'var(--font-body)',
+                fontSize: '0.7rem',
+                fontWeight: 300,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                borderRadius: '0',
+                transition: 'all var(--dur-base) var(--ease)',
+                textDecoration: 'none',
+                display: 'inline-block'
+              }}
+            >
+              SEE OUR WORK
+            </MagneticButton>
+          </div>
+          
+          {/* Bottom left phone */}
+          <div
+            ref={phoneRef}
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 'var(--text-xs)',
+              color: 'var(--fg-2)', // Lightened
+              letterSpacing: '0.15em',
+              marginTop: 'var(--sp-5)',
+              opacity: 0,
+            }}
+          >
+            · +91 79956 17374
+          </div>
         </div>
-        
-        {/* Bottom left phone */}
-        <div
-          ref={phoneRef}
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: 'var(--text-xs)',
-            color: 'var(--fg-2)', // Lightened
-            letterSpacing: '0.15em',
-            marginTop: 'var(--sp-5)',
-            opacity: 0,
+
+        {/* Mockup Column */}
+        <motion.div 
+          className="hero-mockup-wrapper"
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          initial={{ opacity: 0, x: 50, rotateY: -15, scale: 0.9 }}
+          animate={{ opacity: 1, x: 0, rotateY: -5, scale: 1 }}
+          transition={{ duration: 1.2, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          style={{ 
+            perspective: '1000px',
+            display: 'flex',
+            justifyContent: 'center',
+            rotateX,
+            rotateY,
           }}
         >
-          · +91 79956 17374
-        </div>
+          <ChatMockup />
+        </motion.div>
       </div>
 
       {/* Scroll indicator */}

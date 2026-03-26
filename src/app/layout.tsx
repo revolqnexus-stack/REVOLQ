@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Cormorant_Garamond, Jost, DM_Mono } from 'next/font/google'
+import { Cormorant_Garamond, Jost, DM_Mono, Archivo_Black, Space_Grotesk } from 'next/font/google'
 import './globals.css'
 import GlobalEffects from '@/components/GlobalEffects'
 import Nav from '@/components/layout/Nav'
@@ -9,6 +9,7 @@ import Grain from '@/components/ui/Grain'
 import ProgressBar from '@/components/ui/ProgressBar'
 import Preloader from '@/components/Preloader'
 import LenisProvider from '@/lib/lenis'
+import GeometricPlexus from '@/components/ui/GeometricPlexus'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -29,6 +30,20 @@ const dmMono = DM_Mono({
   subsets: ['latin'],
   weight: ['300'],
   variable: '--font-dm-mono',
+  display: 'swap',
+})
+
+const archivoBlack = Archivo_Black({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-archivo',
+  display: 'swap',
+})
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-space',
   display: 'swap',
 })
 
@@ -73,7 +88,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${jost.variable} ${dmMono.variable}`}
+      className={`${cormorant.variable} ${jost.variable} ${dmMono.variable} ${archivoBlack.variable} ${spaceGrotesk.variable}`}
     >
       <head>
         <JsonLd />
@@ -82,6 +97,7 @@ export default function RootLayout({
         <LenisProvider>
           <Preloader />
           <GlobalEffects />
+          <GeometricPlexus />
           <Grain />
           <ProgressBar />
           <Nav />
