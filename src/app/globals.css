@@ -1,0 +1,305 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-ink: #05050a;
+  --color-ink2: #0c0c14;
+  --color-fog: #d8d4e8;
+  --color-rose: #c49a9a;
+  --color-rose2: #e8b4b4;
+  --color-gold: #d4b070;
+  --color-violet: #6b5fa8;
+  --color-white: #f0ecf5;
+  --color-dim: rgba(255,255,255,0.06);
+  --color-border: rgba(255,255,255,0.08);
+  --color-glass: rgba(255,255,255,0.03);
+
+  --font-heading: var(--font-cormorant);
+  --font-body: var(--font-jost);
+  --font-mono: var(--font-dm-mono);
+}
+
+:root {
+  --ink: #05050a;
+  --ink2: #0c0c14;
+  --fog: #d8d4e8;
+  --rose: #c49a9a;
+  --rose2: #e8b4b4;
+  --gold: #d4b070;
+  --violet: #6b5fa8;
+  --white: #f0ecf5;
+  --dim: rgba(255,255,255,0.06);
+  --border: rgba(255,255,255,0.08);
+  --glass: rgba(255,255,255,0.03);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ink);
+  color: var(--white);
+  scroll-behavior: auto;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--ink);
+  color: var(--white);
+  font-family: var(--font-body), sans-serif;
+  font-weight: 200;
+  font-size: 0.95rem;
+  line-height: 1.9;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--rose);
+  color: var(--ink);
+}
+
+/* ─── Typography ─── */
+
+.text-display {
+  font-family: var(--font-heading), serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(6rem, 14vw, 13rem);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--white);
+}
+
+.text-h1 {
+  font-family: var(--font-heading), serif;
+  font-weight: 300;
+  font-size: clamp(3.5rem, 7vw, 7rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--white);
+}
+
+.text-h2 {
+  font-family: var(--font-heading), serif;
+  font-weight: 300;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1.1;
+  color: var(--white);
+}
+
+.text-label {
+  font-family: var(--font-body), sans-serif;
+  font-weight: 200;
+  font-size: 0.65rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--fog);
+}
+
+.text-body {
+  font-family: var(--font-body), sans-serif;
+  font-weight: 200;
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: var(--fog);
+}
+
+.text-mono {
+  font-family: var(--font-mono), monospace;
+  font-weight: 300;
+  font-size: 0.7rem;
+  color: var(--fog);
+}
+
+/* ─── Utility ─── */
+
+.gold-italic {
+  color: var(--gold);
+  font-style: italic;
+}
+
+.section-padding {
+  padding: clamp(4rem, 10vh, 8rem) clamp(1.5rem, 5vw, 6rem);
+}
+
+.max-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ─── Scrollbar ─── */
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ink);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--rose);
+  border-radius: 2px;
+}
+
+/* ─── Grain overlay ─── */
+
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  pointer-events: none;
+  opacity: 0.032;
+}
+
+/* ─── Custom Cursor ─── */
+
+@media (hover: none) {
+  #cursor { display: none !important; }
+}
+
+/* ─── Progress Bar ─── */
+
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--rose), var(--gold));
+  z-index: 400;
+  transform-origin: left;
+}
+
+/* ─── Three.js Canvas ─── */
+
+.aurora-canvas {
+  pointer-events: none;
+}
+
+/* ─── Preloader ─── */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #05050a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.preloader-letter {
+  display: inline-block;
+  font-family: var(--font-heading), serif;
+  font-weight: 300;
+  font-size: 18vw;
+  color: var(--white);
+  line-height: 1;
+}
+
+/* ─── Magnetic Button ─── */
+
+.magnetic-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2.5rem;
+  font-family: var(--font-body), sans-serif;
+  font-weight: 300;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--white);
+  cursor: pointer;
+  transition: background 0.4s ease, border-color 0.4s ease;
+  text-decoration: none;
+}
+
+.magnetic-btn:hover {
+  border-color: var(--rose);
+}
+
+.magnetic-btn.primary {
+  background: var(--rose);
+  border-color: var(--rose);
+  color: var(--ink);
+}
+
+.magnetic-btn.primary:hover {
+  background: var(--rose2);
+  border-color: var(--rose2);
+}
+
+/* ─── Marquee ─── */
+
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.marquee-track {
+  display: flex;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.marquee-left {
+  animation: marquee-left 30s linear infinite;
+}
+
+.marquee-right {
+  animation: marquee-right 30s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ─── Nav ─── */
+
+.nav-scrolled {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+/* ─── Reduced motion ─── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* Grid responsive overwrites */
+@media (max-width: 768px) {
+  .footer-grid,
+  .work-content-grid,
+  .service-detail-grid,
+  .about-grid,
+  .values-grid,
+  .contact-grid,
+  .team-grid,
+  .stats-grid,
+  .pricing-grid,
+  .case-study-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

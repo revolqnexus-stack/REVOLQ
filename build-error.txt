@@ -1,0 +1,68 @@
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\eathe\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\eathe\REVOLQ\REVOLQ\package-lock.json
+
+
+> Build error occurred
+Error: Turbopack build failed with 6 errors:
+./REVOLQ/REVOLQ/src/app/layout.tsx:13:16
+`ssr: false` is not allowed with `next/dynamic` in Server Components. Please move it into a Client Component.
+  [90m11 |[0m ...[36mort[0m [33mLenisProvider[0m [36mfrom[0m [32m'@/lib/lenis'[0m
+  [90m12 |[0m ...
+[31m[1m>[0m [90m13 |[0m ...[36mst[0m [33mCursor[0m = dynamic(() => [36mimport[0m([32m'@/components/ui/Cursor'[0m), { ssr: [36mfalse[0m })
+  [90m   |[0m                [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m14 |[0m ...[36mst[0m [33mAuroraBackground[0m = dynamic(() => [36mimport[0m([32m'@/components/three/AuroraBackground'[0m), { ss...
+  [90m15 |[0m ...
+  [90m16 |[0m ...[36mst[0m cormorant = [33mCormorant_Garamond[0m({
+
+Ecmascript file had an error
+
+
+./REVOLQ/REVOLQ/src/app/layout.tsx:14:26
+`ssr: false` is not allowed with `next/dynamic` in Server Components. Please move it into a Client Component.
+  [90m12 |[0m ...
+  [90m13 |[0m ...ic(() => [36mimport[0m([32m'@/components/ui/Cursor'[0m), { ssr: [36mfalse[0m })
+[31m[1m>[0m [90m14 |[0m ...[33mnd[0m = dynamic(() => [36mimport[0m([32m'@/components/three/AuroraBackground'[0m), { ssr: [36mfalse[0m })
+  [90m   |[0m         [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m15 |[0m ...
+  [90m16 |[0m ...[33mrmorant_Garamond[0m({
+  [90m17 |[0m ...,
+
+Ecmascript file had an error
+
+
+./REVOLQ/REVOLQ/src/app/about/page.tsx
+'styled-jsx' cannot be imported from a Server Component module
+It only works in a Client Component but none of its parents are marked with 'use client', so they're Server Components by default.
+
+
+./REVOLQ/REVOLQ/src/app/services/page.tsx
+'styled-jsx' cannot be imported from a Server Component module
+It only works in a Client Component but none of its parents are marked with 'use client', so they're Server Components by default.
+
+
+./REVOLQ/REVOLQ/src/app/work/page.tsx
+'styled-jsx' cannot be imported from a Server Component module
+It only works in a Client Component but none of its parents are marked with 'use client', so they're Server Components by default.
+
+
+./REVOLQ/REVOLQ/src/components/layout/Footer.tsx
+'styled-jsx' cannot be imported from a Server Component module
+It only works in a Client Component but none of its parents are marked with 'use client', so they're Server Components by default.
+
+Import trace:
+  Server Component:
+    ./REVOLQ/REVOLQ/src/components/layout/Footer.tsx
+    ./REVOLQ/REVOLQ/src/app/layout.tsx
+
+
+    at <unknown> (./REVOLQ/REVOLQ/src/app/layout.tsx:13:16)
+    at <unknown> (./REVOLQ/REVOLQ/src/app/layout.tsx:14:26)
+
+
+▲ Next.js 16.2.1 (Turbopack)
+
+  Creating an optimized production build ...

@@ -1,0 +1,220 @@
+﻿
+> revolq@0.1.0 build
+> next build
+
+node.exe : ΓÜá 
+Warning: Next.js 
+inferred your 
+workspace root, but 
+it may not be correct.
+At line:1 char:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\U
+sers\eathe\AppData\Roa
+ming\ ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (ΓÜá Warnin   
+ g: Ne...not be co    
+rrect.:String) []    
+, RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+ We detected multiple 
+lockfiles and 
+selected the 
+directory of C:\Users\
+eathe\package-lock.jso
+n as the root 
+directory.
+ To silence this 
+warning, set 
+`turbopack.root` in 
+your Next.js config, 
+or consider removing 
+one of the lockfiles 
+if it's not needed.
+   See https://nextjs.
+org/docs/app/api-refer
+ence/config/next-confi
+g-js/turbopack#root-di
+rectory for more 
+information.
+ Detected additional 
+lockfiles: 
+   * C:\Users\eathe\RE
+VOLQ\REVOLQ\package-lo
+ck.json
+
+Γû▓ Next.js 16.2.1 (Turbopack)
+
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack 
+build failed with 6 
+errors:
+./REVOLQ/REVOLQ/src/ap
+p/layout.tsx:13:16
+`ssr: false` is not 
+allowed with 
+`next/dynamic` in 
+Server Components. 
+Please move it into a 
+Client Component.
+  [90m11 |[0m 
+...[36mort[0m [33mL
+enisProvider[0m 
+[36mfrom[0m 
+[32m'@/lib/lenis'[0m
+  [90m12 |[0m ...
+[31m[1m>[0m 
+[90m13 |[0m 
+...[36mst[0m 
+[33mCursor[0m = 
+dynamic(() => [36mimp
+ort[0m([32m'@/compon
+ents/ui/Cursor'[0m), 
+{ ssr: [36mfalse[0m 
+})
+  [90m   |[0m       
+         [31m[1m^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^[0m
+  [90m14 |[0m 
+...[36mst[0m [33mAu
+roraBackground[0m = 
+dynamic(() => [36mimp
+ort[0m([32m'@/compon
+ents/three/AuroraBackg
+round'[0m), { ss...
+  [90m15 |[0m ...
+  [90m16 |[0m 
+...[36mst[0m 
+cormorant = [33mCormo
+rant_Garamond[0m({
+
+Ecmascript file had 
+an error
+
+
+./REVOLQ/REVOLQ/src/ap
+p/layout.tsx:14:26
+`ssr: false` is not 
+allowed with 
+`next/dynamic` in 
+Server Components. 
+Please move it into a 
+Client Component.
+  [90m12 |[0m ...
+  [90m13 |[0m 
+...ic(() => [36mimpor
+t[0m([32m'@/componen
+ts/ui/Cursor'[0m), { 
+ssr: [36mfalse[0m })
+[31m[1m>[0m 
+[90m14 |[0m 
+...[33mnd[0m = 
+dynamic(() => [36mimp
+ort[0m([32m'@/compon
+ents/three/AuroraBackg
+round'[0m), { ssr: 
+[36mfalse[0m })
+  [90m   |[0m       
+  [31m[1m^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
+[0m
+  [90m15 |[0m ...
+  [90m16 |[0m ...[3
+3mrmorant_Garamond[0m
+({
+  [90m17 |[0m ...,
+
+Ecmascript file had 
+an error
+
+
+./REVOLQ/REVOLQ/src/ap
+p/about/page.tsx
+'styled-jsx' cannot 
+be imported from a 
+Server Component 
+module
+It only works in a 
+Client Component but 
+none of its parents 
+are marked with 'use 
+client', so they're 
+Server Components by 
+default.
+
+
+./REVOLQ/REVOLQ/src/ap
+p/services/page.tsx
+'styled-jsx' cannot 
+be imported from a 
+Server Component 
+module
+It only works in a 
+Client Component but 
+none of its parents 
+are marked with 'use 
+client', so they're 
+Server Components by 
+default.
+
+
+./REVOLQ/REVOLQ/src/ap
+p/work/page.tsx
+'styled-jsx' cannot 
+be imported from a 
+Server Component 
+module
+It only works in a 
+Client Component but 
+none of its parents 
+are marked with 'use 
+client', so they're 
+Server Components by 
+default.
+
+
+./REVOLQ/REVOLQ/src/co
+mponents/layout/Footer
+.tsx
+'styled-jsx' cannot 
+be imported from a 
+Server Component 
+module
+It only works in a 
+Client Component but 
+none of its parents 
+are marked with 'use 
+client', so they're 
+Server Components by 
+default.
+
+Import trace:
+  Server Component:
+    ./REVOLQ/REVOLQ/sr
+c/components/layout/Fo
+oter.tsx
+    ./REVOLQ/REVOLQ/sr
+c/app/layout.tsx
+
+
+    at <unknown> (./RE
+VOLQ/REVOLQ/src/app/la
+yout.tsx:13:16)
+    at <unknown> (./RE
+VOLQ/REVOLQ/src/app/la
+yout.tsx:14:26)
