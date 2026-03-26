@@ -88,11 +88,18 @@ export default function Hero() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingLeft: 'clamp(2rem, 8vw, 8rem)',
-        paddingRight: 'clamp(2rem, 8vw, 8rem)',
+        paddingLeft: 'var(--hero-padding, clamp(2rem, 8vw, 8rem))',
+        paddingRight: 'var(--hero-padding, clamp(2rem, 8vw, 8rem))',
         overflow: 'hidden',
       }}
     >
+      <style jsx>{`
+        @media (max-width: 768px) {
+          section {
+            --hero-padding: 1rem !important;
+          }
+        }
+      `}</style>
       <div style={{ position: 'relative', zIndex: 2, maxWidth: '1000px' }}>
         
         {/* Eyebrow */}
@@ -175,7 +182,7 @@ export default function Hero() {
 
         {/* Buttons */}
         <div ref={btnsRef} style={{ display: 'flex', gap: 'var(--sp-5)', flexWrap: 'wrap', opacity: 0 }}>
-          <a
+          <MagneticButton
             href="/contact"
             style={{
               background: 'var(--accent)',
@@ -192,18 +199,10 @@ export default function Hero() {
               textDecoration: 'none',
               display: 'inline-block'
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'var(--accent-2)'
-              e.currentTarget.style.transform = 'translateY(-1px)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'var(--accent)'
-              e.currentTarget.style.transform = 'translateY(0)'
-            }}
           >
             START A PROJECT
-          </a>
-          <a
+          </MagneticButton>
+          <MagneticButton
             href="/work"
             style={{
               background: 'transparent',
@@ -220,17 +219,9 @@ export default function Hero() {
               textDecoration: 'none',
               display: 'inline-block'
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'var(--border-hover)'
-              e.currentTarget.style.color = 'var(--fg)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'var(--border)'
-              e.currentTarget.style.color = 'var(--fg-2)'
-            }}
           >
             SEE OUR WORK
-          </a>
+          </MagneticButton>
         </div>
         
         {/* Bottom left phone */}

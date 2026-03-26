@@ -11,7 +11,7 @@ export default function Cursor() {
 
   const mouse = useRef({ x: 0, y: 0 })
   const ringPos = useRef({ x: 0, y: 0 })
-  const afRef = useRef<number>()
+  const afRef = useRef<number>(0)
 
   useEffect(() => {
     // Hide on mobile (pointer: coarse)

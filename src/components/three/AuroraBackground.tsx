@@ -208,6 +208,8 @@ export default function AuroraBackground() {
       perspCam.updateProjectionMatrix()
     }
 
+    if (window.innerWidth < 768) return
+
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('resize', handleResize)
@@ -255,7 +257,7 @@ export default function AuroraBackground() {
   return (
     <div
       ref={containerRef}
-      className="aurora-canvas"
+      className="aurora-canvas max-md:hidden"
       style={{
         position: 'fixed',
         inset: 0,
