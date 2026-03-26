@@ -3,7 +3,7 @@
 import { useRef, ReactNode } from 'react'
 import gsap from 'gsap'
 
-interface MagneticButtonProps {
+interface MagneticButtonProps extends React.HTMLAttributes<HTMLElement> {
   children: ReactNode
   className?: string
   href?: string

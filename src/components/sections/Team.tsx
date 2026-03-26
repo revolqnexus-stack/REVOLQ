@@ -31,9 +31,10 @@ export default function Team() {
           {/* Ajmal */}
           <div>
             <RevealImage
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80"
+              src="/images/ajmal.png"
               alt="Ajmal Mullapati — Co-founder of REVOLQ"
               className="team-image"
+              style={{ aspectRatio: '3/4', objectFit: 'cover' }}
             />
             <div style={{ marginTop: '1.5rem' }}>
               <h3
@@ -57,9 +58,10 @@ export default function Team() {
           {/* Eathen */}
           <div>
             <RevealImage
-              src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80"
+              src="/images/eathen.png"
               alt="Eathen Baby — Co-founder of REVOLQ"
               className="team-image"
+              style={{ aspectRatio: '3/4', objectFit: 'cover' }}
             />
             <div style={{ marginTop: '1.5rem' }}>
               <h3

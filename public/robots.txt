@@ -1,2 +1,9 @@
+# *
 User-agent: *
 Allow: /
+
+# Host
+Host: https://revolq.in
+
+# Sitemaps
+Sitemap: https://revolq.in/sitemap.xml

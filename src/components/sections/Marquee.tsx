@@ -20,12 +20,14 @@ export default function Marquee() {
             <span
               key={i}
               style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: 'clamp(2rem, 4vw, 4rem)',
+                fontFamily: 'var(--font-body)',
+                fontSize: 'clamp(2rem, 3.5vw, 3.5rem)',
                 fontWeight: 300,
+                letterSpacing: '-0.02em',
                 color: 'var(--white)',
                 opacity: 0.15,
                 paddingRight: '2rem',
+                textTransform: 'uppercase',
               }}
             >
               {track1}
@@ -41,12 +43,14 @@ export default function Marquee() {
             <span
               key={i}
               style={{
-                fontFamily: 'var(--font-heading)',
-                fontSize: 'clamp(2rem, 4vw, 4rem)',
+                fontFamily: 'var(--font-body)',
+                fontSize: 'clamp(2rem, 3.5vw, 3.5rem)',
                 fontWeight: 300,
+                letterSpacing: '-0.02em',
                 color: 'var(--white)',
                 opacity: 0.1,
                 paddingRight: '2rem',
+                textTransform: 'uppercase',
               }}
             >
               {track2}

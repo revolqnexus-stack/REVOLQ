@@ -65,7 +65,7 @@ export default function AboutPage() {
               </p>
             </div>
             <RevealImage
-              src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80"
+              src="/images/texture1.png"
               alt="Modern workspace"
             />
           </div>
@@ -117,7 +117,7 @@ export default function AboutPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }} className="about-grid">
             <div>
               <RevealImage
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80"
+                src="/images/ajmal.png"
                 alt="Ajmal Mullapati"
               />
               <div style={{ marginTop: '1.5rem' }}>
@@ -129,7 +129,7 @@ export default function AboutPage() {
             </div>
             <div>
               <RevealImage
-                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80"
+                src="/images/eathen.png"
                 alt="Eathen Baby"
               />
               <div style={{ marginTop: '1.5rem' }}>

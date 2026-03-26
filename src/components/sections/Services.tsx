@@ -17,42 +17,42 @@ const services = [
     title: 'WEB DEVELOPMENT',
     desc: 'Next.js websites engineered to rank, convert, and scale. Not templates. Not themes. Systems.',
     tags: ['Next.js', 'TypeScript', 'Vercel', 'SEO-first'],
-    img: 'https://images.unsplash.com/photo-1555066931-4365d14431b9?auto=format&fit=crop&w=800&q=80',
+    img: '/images/texture1.png',
   },
   {
     num: '02',
     title: 'SEO & GBP',
     desc: 'Google visibility for businesses that deserve to be found. Local SEO, Search Console, structured data, monthly ranking reports.',
     tags: ['Google', 'Search Console', 'GBP', 'Schema'],
-    img: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=800&q=80',
+    img: '/images/texture1.png',
   },
   {
     num: '03',
     title: 'AI AUTOMATION',
     desc: 'WhatsApp agents that reply in your voice. n8n workflows that run while you sleep. Your business, automated.',
     tags: ['Claude AI', 'n8n', 'WhatsApp API', 'Webhooks'],
-    img: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?auto=format&fit=crop&w=800&q=80',
+    img: '/images/texture1.png',
   },
   {
     num: '04',
     title: 'CONTENT & COPY',
     desc: 'Words that convert. Descriptions that rank. Copy that makes visitors become clients.',
     tags: ['SEO Copy', 'Brand Voice', 'OG', 'Schema'],
-    img: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80',
+    img: '/images/texture1.png',
   },
   {
     num: '05',
     title: 'BRAND STRATEGY',
     desc: 'Positioning. Identity. The story your business tells before anyone speaks.',
     tags: ['Identity', 'Positioning', 'Visual System'],
-    img: 'https://images.unsplash.com/photo-1634942537034-2531766767d1?auto=format&fit=crop&w=800&q=80',
+    img: '/images/texture1.png',
   },
   {
     num: '06',
     title: 'MONTHLY RETAINER',
     desc: 'We become your digital team. GBP management, content, SEO monitoring, AI maintenance — all handled. Every month.',
     tags: ['Ongoing', 'Reports', 'Management', 'Growth'],
-    img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80',
+    img: '/images/texture1.png',
   },
 ]
 
@@ -125,15 +125,20 @@ export default function Services() {
               key={service.num}
               style={{
                 minWidth: 420,
-                height: '100%',
+                height: 'calc(100% - 4rem)',
+                margin: '2rem 1rem',
                 padding: '3rem 2.5rem',
-                borderRight: '1px solid var(--border)',
+                border: '1px solid rgba(255,255,255,0.05)',
+                background: 'rgba(255,255,255,0.02)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 position: 'relative',
                 overflow: 'hidden',
+                transition: 'background 0.3s ease',
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.04)')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.02)')}
             >
               {/* Number */}
               <span className="text-mono" style={{ opacity: 0.4, marginBottom: '1rem' }}>
@@ -191,12 +196,14 @@ export default function Services() {
               </div>
 
               {/* Image */}
-              <div style={{ position: 'relative', aspectRatio: '16/10', width: '100%', borderRadius: '4px', overflow: 'hidden' }}>
+              <div 
+                style={{ position: 'relative', aspectRatio: '16/10', width: '100%', overflow: 'hidden' }}
+              >
                 <Image
                   src={service.img}
                   alt={service.title}
                   fill
-                  style={{ objectFit: 'cover', opacity: 0.6 }}
+                  style={{ objectFit: 'cover', opacity: 0.6, mixBlendMode: 'screen', filter: 'contrast(1.2)' }}
                   sizes="420px"
                 />
               </div>

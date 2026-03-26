@@ -15,9 +15,10 @@ interface RevealImageProps {
   fill?: boolean
   priority?: boolean
   className?: string
+  style?: React.CSSProperties
 }
 
-export default function RevealImage({ src, alt, width, height, fill = false, priority = false, className = '' }: RevealImageProps) {
+export default function RevealImage({ src, alt, width, height, fill = false, priority = false, className = '', style }: RevealImageProps) {
   const outerRef = useRef<HTMLDivElement>(null)
   const innerRef = useRef<HTMLDivElement>(null)
 
@@ -58,7 +59,7 @@ export default function RevealImage({ src, alt, width, height, fill = false, pri
   }, [])
 
   return (
-    <div ref={outerRef} style={{ overflow: 'hidden', position: 'relative' }} className={className}>
+    <div ref={outerRef} style={{ overflow: 'hidden', position: 'relative', ...style }} className={className}>
       <div ref={innerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
         {fill ? (
           <Image src={src} alt={alt} fill priority={priority} style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 50vw" />

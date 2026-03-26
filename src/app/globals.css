@@ -258,11 +258,11 @@ body {
 }
 
 .marquee-left {
-  animation: marquee-left 30s linear infinite;
+  animation: marquee-left 50s linear infinite;
 }
 
 .marquee-right {
-  animation: marquee-right 30s linear infinite;
+  animation: marquee-right 50s linear infinite;
 }
 
 .marquee-track:hover {
@@ -295,11 +295,38 @@ body {
   .service-detail-grid,
   .about-grid,
   .values-grid,
+  .values-grid,
   .contact-grid,
   .team-grid,
   .stats-grid,
-  .pricing-grid,
   .case-study-grid {
     grid-template-columns: 1fr !important;
+  }
+
+  .pricing-grid-container {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    width: 100vw;
+    margin-left: -5vw;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    gap: 1.5rem !important;
+    padding-bottom: 2rem;
+  }
+  
+  .pricing-card {
+    min-width: 85vw;
+    scroll-snap-align: center;
+  }
+}
+
+.pricing-grid-container {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+@media (max-width: 768px) {
+  .pricing-grid-container {
+    display: flex !important;
   }
 }

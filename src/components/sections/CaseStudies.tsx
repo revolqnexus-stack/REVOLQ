@@ -24,118 +24,118 @@ export default function CaseStudies() {
         </div>
 
         {/* NIXTUDIO — Featured */}
-        <div
-          style={{
-            border: '1px solid var(--border)',
-            padding: 'clamp(2rem, 4vw, 4rem)',
-            marginBottom: '3rem',
-            position: 'relative',
-            transition: 'border-color 0.4s ease',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--rose)')}
-          onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border)')}
-        >
+        <div style={{ marginBottom: '6rem' }}>
+          {/* Full Width Image Hero */}
+          <div style={{ width: '100%', marginBottom: '3rem' }}>
+            <RevealImage
+              src="/images/nixtudio.png"
+              alt="NIXTUDIO bridal studio by Nikita Liby"
+              style={{ aspectRatio: '16/7', objectFit: 'cover', width: '100%' }}
+            />
+          </div>
+
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '3rem',
+              gridTemplateColumns: '1fr 1.5fr',
+              gap: '4rem',
+              alignItems: 'start',
+            }}
+            className="case-study-grid"
+          >
+            {/* Left Col: Info */}
+            <div>
+              <span className="text-mono" style={{ display: 'block', marginBottom: '1rem', opacity: 0.5 }}>
+                BRIDAL STUDIO · PALA, KERALA · 2025
+              </span>
+              <SplitText text="NIXTUDIO by Nikita Liby" className="text-h2" tag="h3" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', lineHeight: 1 }} />
+              <p className="text-body" style={{ margin: '2rem 0', maxWidth: 400 }}>
+                A complete digital transformation for Pala&apos;s most premium bridal makeup studio.
+                Website, SEO, GBP optimisation, and a 24/7 WhatsApp AI agent that replies in Nikita&apos;s voice.
+              </p>
+              <MagneticButton href="/work" className="primary">
+                VIEW CASE STUDY
+              </MagneticButton>
+            </div>
+
+            {/* Right Col: Massive Stats */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+              {metrics.map((m) => (
+                <div
+                  key={m.label}
+                  style={{
+                    padding: '2rem 1.5rem',
+                    borderLeft: '1px solid var(--border)',
+                    borderBottom: '1px solid var(--border)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-heading)',
+                      fontSize: 'clamp(3rem, 6vw, 5rem)',
+                      fontWeight: 300,
+                      color: 'var(--white)',
+                      lineHeight: 1,
+                      letterSpacing: '-0.02em',
+                      marginBottom: '0.5rem',
+                    }}
+                  >
+                    {m.value}
+                  </div>
+                  <div className="text-mono" style={{ opacity: 0.5, fontSize: '0.7rem' }}>
+                    {m.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Holy Family Dental — Minimal Gallery Block */}
+        <div style={{ borderTop: '1px solid var(--border)', paddingTop: '3rem' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 2fr',
+              gap: '4rem',
               alignItems: 'center',
             }}
             className="case-study-grid"
           >
             <div>
               <span className="text-mono" style={{ display: 'block', marginBottom: '1rem', opacity: 0.5 }}>
-                BRIDAL STUDIO · PALA, KERALA · 2025
+                DENTAL CLINIC · KURAVILANGAD, KERALA
               </span>
-              <SplitText text="NIXTUDIO by Nikita Liby" className="text-h2" tag="h3" />
-              <p className="text-body" style={{ margin: '1.5rem 0', maxWidth: 500 }}>
-                A complete digital transformation for Pala&apos;s most premium bridal makeup studio.
-                Website, SEO, GBP optimisation, and a 24/7 WhatsApp AI agent that replies in Nikita&apos;s voice.
+              <SplitText text="Holy Family Dental Care" className="text-h2" tag="h3" />
+              <p className="text-body" style={{ margin: '1.5rem 0', maxWidth: 400 }}>
+                Digital presence for a specialist dental clinic in Kottayam district.
               </p>
-
-              {/* Metrics */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '2rem' }}>
-                {metrics.map((m) => (
-                  <div
-                    key={m.label}
-                    style={{
-                      padding: '0.5rem 1rem',
-                      border: '1px solid var(--border)',
-                      borderRadius: '2px',
-                      textAlign: 'center',
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-heading)',
-                        fontSize: '1.4rem',
-                        fontWeight: 300,
-                        color: 'var(--white)',
-                      }}
-                    >
-                      {m.value}
-                    </div>
-                    <div className="text-mono" style={{ opacity: 0.5, fontSize: '0.6rem' }}>
-                      {m.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <MagneticButton href="/work">
-                VIEW CASE STUDY →
-              </MagneticButton>
+              <span
+                className="text-mono"
+                style={{
+                  display: 'inline-block',
+                  padding: '0.4rem 1rem',
+                  border: '1px solid var(--gold)',
+                  color: 'var(--gold)',
+                  fontSize: '0.6rem',
+                  letterSpacing: '0.2em',
+                }}
+              >
+                COMING SOON
+              </span>
             </div>
 
-            <RevealImage
-              src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=1200&q=80"
-              alt="NIXTUDIO bridal studio by Nikita Liby"
-              className="case-study-image"
-            />
+            <div style={{ position: 'relative', overflow: 'hidden', padding: '2rem', background: 'var(--glass)' }}>
+              <RevealImage
+                src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80"
+                alt="Holy Family Dental Care clinic"
+                style={{ aspectRatio: '16/9', objectFit: 'cover' }}
+              />
+            </div>
           </div>
-        </div>
-
-        {/* Holy Family Dental — Smaller Card */}
-        <div
-          style={{
-            border: '1px solid var(--border)',
-            padding: 'clamp(2rem, 4vw, 3rem)',
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '2rem',
-            alignItems: 'center',
-            position: 'relative',
-          }}
-          className="case-study-grid"
-        >
-          <div>
-            <span className="text-mono" style={{ display: 'block', marginBottom: '1rem', opacity: 0.5 }}>
-              DENTAL CLINIC · KURAVILANGAD, KERALA
-            </span>
-            <SplitText text="Holy Family Dental Care" className="text-h2" tag="h3" />
-            <p className="text-body" style={{ margin: '1.5rem 0', maxWidth: 400 }}>
-              Digital presence for a specialist dental clinic in Kottayam district.
-            </p>
-            <span
-              className="text-mono"
-              style={{
-                display: 'inline-block',
-                padding: '0.4rem 1rem',
-                border: '1px solid var(--gold)',
-                color: 'var(--gold)',
-                fontSize: '0.6rem',
-                letterSpacing: '0.2em',
-              }}
-            >
-              COMING SOON
-            </span>
-          </div>
-
-          <RevealImage
-            src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80"
-            alt="Holy Family Dental Care clinic"
-          />
         </div>
       </div>
 

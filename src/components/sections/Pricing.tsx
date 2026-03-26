@@ -91,86 +91,121 @@ export default function Pricing() {
         </div>
 
         {/* Cards */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '1.5rem',
-            marginTop: '3rem',
-          }}
-          className="pricing-grid"
-        >
-          {tiers.map((tier, i) => (
-            <div
-              key={tier.name}
-              style={{
-                padding: '2.5rem 2rem',
-                border: `1px solid ${tier.featured ? 'var(--rose)' : 'var(--border)'}`,
-                position: 'relative',
-                opacity: visible ? 1 : 0,
-                transform: visible
-                  ? `translateY(0) ${tier.featured ? 'scale(1.03)' : ''}`
-                  : `translateY(40px) ${tier.featured ? 'scale(1.03)' : ''}`,
-                transition: `all 0.6s ease ${i * 0.15}s`,
-                background: tier.featured ? 'var(--glass)' : 'transparent',
-              }}
-            >
-              {/* Name */}
-              <h3 className="text-label" style={{ marginBottom: '0.5rem', color: tier.featured ? 'var(--rose)' : 'var(--fog)' }}>
-                {tier.name}
-              </h3>
-
-              {/* Price */}
+          <div
+            className="pricing-grid-container"
+            style={{
+              display: 'flex',
+              gap: '2rem',
+              marginTop: '4rem',
+            }}
+          >
+            {tiers.map((tier, i) => (
               <div
+                key={tier.name}
+                className="pricing-card"
                 style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontSize: 'clamp(2rem, 4vw, 3rem)',
-                  fontWeight: 300,
-                  color: 'var(--white)',
-                  marginBottom: '0.5rem',
+                  flex: '0 0 auto',
+                  width: '100%',
+                  padding: tier.featured ? '3rem 2.5rem' : '2.5rem 0',
+                  borderTop: tier.featured ? 'none' : '1px solid var(--border)',
+                  borderBottom: tier.featured ? 'none' : '1px solid var(--border)',
+                  position: 'relative',
+                  opacity: visible ? 1 : 0,
+                  transform: visible ? 'translateY(0)' : 'translateY(40px)',
+                  transition: `all 0.8s cubic-bezier(0.16, 1, 0.3, 1) ${i * 0.15}s`,
+                  background: tier.featured ? 'var(--white)' : 'transparent',
+                  color: tier.featured ? 'var(--ink)' : 'inherit',
+                  display: 'flex',
+                  flexDirection: 'column',
                 }}
               >
-                {tier.price}
+                {/* Name */}
+                <h3
+                  className="text-label"
+                  style={{
+                    marginBottom: '1rem',
+                    color: tier.featured ? 'var(--ink)' : 'var(--fog)',
+                    opacity: tier.featured ? 0.6 : 1,
+                  }}
+                >
+                  {tier.name}
+                </h3>
+
+                {/* Price */}
+                <div
+                  style={{
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+                    fontWeight: 300,
+                    color: tier.featured ? 'var(--ink)' : 'var(--white)',
+                    lineHeight: 1,
+                    marginBottom: '1rem',
+                    letterSpacing: '-0.02em',
+                  }}
+                >
+                  {tier.price}
+                </div>
+
+                {/* Sub */}
+                <p
+                  className="text-body"
+                  style={{
+                    marginBottom: '3rem',
+                    fontSize: '0.9rem',
+                    color: tier.featured ? 'var(--ink)' : 'inherit',
+                  }}
+                >
+                  {tier.sub}
+                </p>
+
+                {/* Features */}
+                <ul style={{ listStyle: 'none', padding: 0, flex: 1, marginBottom: '3rem' }}>
+                  {tier.features.map((f) => (
+                    <li
+                      key={f.text}
+                      style={{
+                        padding: '0.7rem 0',
+                        borderBottom: `1px solid ${tier.featured ? 'rgba(0,0,0,0.1)' : 'var(--dim)'}`,
+                        fontSize: '0.8rem',
+                        fontWeight: 200,
+                        color: f.included
+                          ? (tier.featured ? 'var(--ink)' : 'var(--white)')
+                          : (tier.featured ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.2)'),
+                        display: 'flex',
+                        gap: '0.75rem',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: f.included
+                            ? (tier.featured ? 'var(--ink)' : 'var(--rose)')
+                            : 'transparent',
+                          fontSize: '0.9rem',
+                        }}
+                      >
+                        {f.included ? '✓' : '—'}
+                      </span>
+                      <span style={{ opacity: f.included ? 1 : 0.5 }}>{f.text}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <MagneticButton
+                  href="/contact"
+                  className={tier.featured ? '' : 'primary'}
+                  style={{
+                    width: '100%',
+                    background: tier.featured ? 'var(--ink)' : 'var(--rose)',
+                    color: tier.featured ? 'var(--white)' : 'var(--ink)',
+                    borderColor: 'transparent',
+                  }}
+                >
+                  {tier.cta}
+                </MagneticButton>
               </div>
-
-              {/* Sub */}
-              <p className="text-body" style={{ marginBottom: '2rem', fontSize: '0.85rem' }}>
-                {tier.sub}
-              </p>
-
-              {/* Features */}
-              <ul style={{ listStyle: 'none', padding: 0, marginBottom: '2rem' }}>
-                {tier.features.map((f) => (
-                  <li
-                    key={f.text}
-                    style={{
-                      padding: '0.5rem 0',
-                      borderBottom: '1px solid var(--dim)',
-                      fontSize: '0.8rem',
-                      fontWeight: 200,
-                      color: f.included ? 'var(--fog)' : 'rgba(255,255,255,0.2)',
-                      display: 'flex',
-                      gap: '0.5rem',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <span style={{ color: f.included ? 'var(--rose)' : 'rgba(255,255,255,0.15)', fontSize: '0.9rem' }}>
-                      {f.included ? '✓' : '✗'}
-                    </span>
-                    {f.text}
-                  </li>
-                ))}
-              </ul>
-
-              <MagneticButton
-                href="/contact"
-                className={tier.featured ? 'primary' : ''}
-              >
-                {tier.cta}
-              </MagneticButton>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
         {/* Bottom text */}
         <div style={{ textAlign: 'center', marginTop: '3rem' }}>

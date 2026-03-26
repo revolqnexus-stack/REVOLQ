@@ -45,7 +45,7 @@ export default function WorkPage() {
 
           <div style={{ margin: '3rem 0' }}>
             <RevealImage
-              src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=1200&q=80"
+              src="/images/nixtudio.png"
               alt="NIXTUDIO bridal studio showcase"
               priority
             />
@@ -138,7 +138,7 @@ export default function WorkPage() {
           </p>
           <div style={{ marginTop: '2rem' }}>
             <RevealImage
-              src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80"
+              src="/images/texture1.png"
               alt="Holy Family Dental Care clinic"
             />
           </div>

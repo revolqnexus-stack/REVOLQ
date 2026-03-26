@@ -11,9 +11,10 @@ interface SplitTextProps {
   className?: string
   delay?: number
   tag?: 'h1' | 'h2' | 'h3' | 'p' | 'span' | 'div'
+  style?: React.CSSProperties
 }
 
-export default function SplitText({ text, className = '', delay = 0, tag: Tag = 'div' }: SplitTextProps) {
+export default function SplitText({ text, className = '', delay = 0, tag: Tag = 'div', style }: SplitTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export default function SplitText({ text, className = '', delay = 0, tag: Tag = 
   const words = text.split(' ')
 
   return (
-    <Tag ref={containerRef as React.RefObject<HTMLElement & HTMLDivElement>} className={className} aria-label={text}>
+    <Tag ref={containerRef as React.RefObject<HTMLElement & HTMLDivElement>} className={className} aria-label={text} style={style}>
       {words.map((word, wi) => (
         <span key={wi} style={{ display: 'inline-block', whiteSpace: 'pre' }}>
           {word.split('').map((char, ci) => (
