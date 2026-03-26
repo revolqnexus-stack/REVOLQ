@@ -58,158 +58,129 @@ const services = [
 
 export default function Services() {
   const sectionRef = useRef<HTMLDivElement>(null)
-  const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!sectionRef.current || !scrollContainerRef.current) return
+    if (!sectionRef.current) return
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) return
 
-    const totalScroll = scrollContainerRef.current.scrollWidth - window.innerWidth
-
-    const tween = gsap.to(scrollContainerRef.current, {
-      x: -totalScroll,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: `+=${totalScroll}`,
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1,
-      },
+    const rows = sectionRef.current.querySelectorAll('.service-row')
+    
+    rows.forEach((row, i) => {
+      gsap.fromTo(row, 
+        { y: 50, opacity: 0 },
+        { 
+          y: 0, 
+          opacity: 1, 
+          duration: 0.8, 
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: row,
+            start: 'top 85%',
+          }
+        }
+      )
     })
 
     return () => {
-      tween.kill()
-      ScrollTrigger.getAll().forEach((st) => {
-        if (st.trigger === sectionRef.current) st.kill()
+      ScrollTrigger.getAll().forEach(st => {
+        if (st.trigger && (st.trigger as Element).classList?.contains('service-row')) {
+          st.kill()
+        }
       })
     }
   }, [])
 
   return (
-    <section ref={sectionRef} style={{ overflow: 'hidden', position: 'relative' }}>
-      <div
-        ref={scrollContainerRef}
-        style={{
-          display: 'flex',
-          alignItems: 'stretch',
-          height: '100vh',
-        }}
-      >
-        {/* Pinned left panel */}
-        <div
-          style={{
-            minWidth: 'clamp(300px, 30vw, 500px)',
-            padding: 'clamp(2rem, 5vh, 4rem) clamp(1.5rem, 5vw, 4rem)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            borderRight: '1px solid var(--border)',
-          }}
-        >
-          <span className="text-label" style={{ marginBottom: '1.5rem' }}>
+    <section ref={sectionRef} className="section-padding" style={{ position: 'relative' }}>
+      <div className="max-container">
+        {/* Header */}
+        <div style={{ marginBottom: '6rem', maxWidth: 800 }}>
+          <span className="text-label" style={{ marginBottom: '1.5rem', display: 'block' }}>
             WHAT WE DO
           </span>
           <SplitText text="Every system." className="text-h2" tag="h2" />
           <SplitText text="Carefully built." className="text-h2" delay={0.1} tag="h2" />
-          <p className="text-body" style={{ marginTop: '1.5rem', maxWidth: 280 }}>
-            Six services. One agency.
+          <p className="text-body" style={{ marginTop: '2rem', maxWidth: 400, fontSize: '1.1rem', color: 'var(--fog)' }}>
+            We don't just build websites. We build comprehensive digital ecosystems that drive revenue.
           </p>
         </div>
 
-        {/* Cards */}
-        {services.map((service, i) => {
-          const Icon = icons[i]
-          return (
-            <div
-              key={service.num}
-              style={{
-                minWidth: 420,
-                height: 'calc(100% - 4rem)',
-                margin: '2rem 1rem',
-                padding: '3rem 2.5rem',
-                border: '1px solid rgba(255,255,255,0.05)',
-                background: 'rgba(255,255,255,0.02)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                position: 'relative',
-                overflow: 'hidden',
-                transition: 'background 0.3s ease',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.04)')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.02)')}
-            >
-              {/* Number */}
-              <span className="text-mono" style={{ opacity: 0.4, marginBottom: '1rem' }}>
-                {service.num}
-              </span>
-
-              {/* Icon + Title */}
-              <div>
-                <Icon
-                  size={24}
-                  strokeWidth={1}
-                  color="var(--rose)"
-                  style={{ marginBottom: '1rem' }}
-                />
-                <h3
-                  style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '0.65rem',
-                    fontWeight: 300,
-                    letterSpacing: '0.3em',
-                    color: 'var(--white)',
-                    marginBottom: '1rem',
-                  }}
-                >
-                  {service.title}
-                </h3>
-                <p className="text-body" style={{ fontSize: '0.85rem', maxWidth: 320 }}>
-                  {service.desc}
-                </p>
-              </div>
-
-              {/* Tags */}
+        {/* Rows */}
+        <div style={{ borderTop: '1px solid var(--border)' }}>
+          {services.map((service, i) => {
+            const Icon = icons[i]
+            return (
               <div
+                key={service.num}
+                className="service-row service-detail-grid"
                 style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: '0.5rem',
-                  margin: '1.5rem 0',
+                  padding: '4rem 0',
+                  borderBottom: '1px solid var(--border)',
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 3fr 2fr',
+                  gap: '2rem',
+                  alignItems: 'start',
                 }}
               >
-                {service.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-mono"
+                {/* 1. Number & Icon */}
+                <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+                  <span className="text-mono" style={{ fontSize: '1rem', opacity: 0.3 }}>
+                    {service.num}
+                  </span>
+                  <div style={{ padding: '1rem', border: '1px solid var(--dim)', borderRadius: '50%' }}>
+                    <Icon size={24} strokeWidth={1} color="var(--rose)" />
+                  </div>
+                </div>
+
+                {/* 2. Title & Desc */}
+                <div style={{ paddingRight: '2rem' }}>
+                  <h3
                     style={{
-                      padding: '0.3rem 0.6rem',
-                      border: '1px solid var(--border)',
-                      borderRadius: '2px',
-                      fontSize: '0.6rem',
+                      fontFamily: 'var(--font-heading)',
+                      fontSize: 'clamp(2rem, 3.5vw, 3rem)',
+                      fontWeight: 300,
+                      color: 'var(--white)',
+                      marginBottom: '1rem',
+                      lineHeight: 1.1,
+                      letterSpacing: '-0.02em',
                     }}
                   >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+                    {service.title}
+                  </h3>
+                  <p className="text-body" style={{ fontSize: '1.05rem', color: 'var(--fog)', maxWidth: 500, lineHeight: 1.6 }}>
+                    {service.desc}
+                  </p>
+                </div>
 
-              {/* Image */}
-              <div 
-                style={{ position: 'relative', aspectRatio: '16/10', width: '100%', overflow: 'hidden' }}
-              >
-                <Image
-                  src={service.img}
-                  alt={service.title}
-                  fill
-                  style={{ objectFit: 'cover', opacity: 0.6, mixBlendMode: 'screen', filter: 'contrast(1.2)' }}
-                  sizes="420px"
-                />
+                {/* 3. Tags */}
+                <div>
+                  <h4 className="text-mono" style={{ fontSize: '0.65rem', opacity: 0.5, marginBottom: '1.5rem' }}>
+                    DELIVERABLES
+                  </h4>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem' }}>
+                    {service.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-mono"
+                        style={{
+                          padding: '0.5rem 0.8rem',
+                          border: '1px solid rgba(255,255,255,0.1)',
+                          borderRadius: '2px',
+                          fontSize: '0.65rem',
+                          color: 'var(--white)',
+                          background: 'rgba(255,255,255,0.02)',
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
     </section>
   )

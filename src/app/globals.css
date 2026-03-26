@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-ink: #05050a;
-  --color-ink2: #0c0c14;
-  --color-fog: #d8d4e8;
-  --color-rose: #c49a9a;
-  --color-rose2: #e8b4b4;
-  --color-gold: #d4b070;
-  --color-violet: #6b5fa8;
-  --color-white: #f0ecf5;
-  --color-dim: rgba(255,255,255,0.06);
-  --color-border: rgba(255,255,255,0.08);
-  --color-glass: rgba(255,255,255,0.03);
+  --color-ink: #080808;
+  --color-ink2: #111111;
+  --color-fog: #a3a3a3;
+  --color-rose: #e5b3b3;
+  --color-rose2: #f2c9c9;
+  --color-gold: #e2c082;
+  --color-violet: #8c7cca;
+  --color-white: #f8f8f8;
+  --color-dim: rgba(255,255,255,0.08);
+  --color-border: rgba(255,255,255,0.12);
+  --color-glass: rgba(255,255,255,0.04);
 
   --font-heading: var(--font-cormorant);
   --font-body: var(--font-jost);
@@ -19,17 +19,17 @@
 }
 
 :root {
-  --ink: #05050a;
-  --ink2: #0c0c14;
-  --fog: #d8d4e8;
-  --rose: #c49a9a;
-  --rose2: #e8b4b4;
-  --gold: #d4b070;
-  --violet: #6b5fa8;
-  --white: #f0ecf5;
-  --dim: rgba(255,255,255,0.06);
-  --border: rgba(255,255,255,0.08);
-  --glass: rgba(255,255,255,0.03);
+  --ink: #080808;
+  --ink2: #111111;
+  --fog: #a3a3a3;
+  --rose: #e5b3b3;
+  --rose2: #f2c9c9;
+  --gold: #e2c082;
+  --violet: #8c7cca;
+  --white: #f8f8f8;
+  --dim: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.12);
+  --glass: rgba(255,255,255,0.04);
 }
 
 * {
